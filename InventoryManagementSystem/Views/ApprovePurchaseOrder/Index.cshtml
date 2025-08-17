@@ -1,0 +1,58 @@
+﻿@model  IEnumerable<InventoryManagementSystem.Domain.PurchaseOrderMessageVM>
+@{
+    ViewBag.Title = "Order Request Details ";
+}
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="box-title"><i class="fa fa-list"></i> Order Request Details </div>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body tablefont">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Order No</th>
+                    <th>Order Date</th>
+                    <th>Vendor Name</th>
+                    <th>Order By</th>
+                    <th>Forwarded To</th>
+                    <th>Order Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => item.order_no)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.order_date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.vendorname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.orderby)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.forwardedto)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.status)
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Create","ApprovePurchaseOrder",new { id=item.id})" class="btn btn-xs btn-info" title="Approve"><i>Approve</i></a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

@@ -1,0 +1,142 @@
+﻿@model InventoryManagementSystem.Domain.InDisposeMessageVM
+@{
+    ViewBag.Title = "Disposal Product entry";
+}
+<style>
+    input {
+        height: 3rem;
+    }
+
+        input[type=checkbox] {
+            width: 16px;
+            height: 16px;
+        }
+</style>
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="box-title"> <i class="fa fa-arrow-right"></i>Disposal Product entry</div>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.Id)
+<div class="box-body formfont">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <h4 style="margin-bottom:10px; color:chocolate"><i class="fa fa-info-circle"></i> Disposal Product Entry</h4>
+    <label class="custom-control-label" style="font-size: 15px" for="defaultUnchecked">Check For Without VAT</label>
+    <input type="checkbox" class="custom-control-input" id="defaultUnchecked">
+    <fieldset style="list-style: circle; list-style-type: circle; width: 98%;">
+        <legend style="color:forestgreen;font-size:small;font:bold">Product Information:</legend>
+        <div class="row">
+            <div class="col-md-3 col-xs-12">
+                <div class="form-group">
+                    <label class="control-label">Product Name </label>
+                    @Html.DropDownListFor(model => model.ProductId, Model.ProductNameList, new { @class = "form-control selectSearch", @id = "prodname" })
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-12">
+                <div class="form-group">
+                    <label class="control-label">Unit </label>
+                    <input type="text" id="unit" readonly="readonly" name="unit">
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-12">
+                <div class="form-group">
+                    <label class="control-label">Qty </label>
+                    <input type="number" id="qty" name="qty">
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-12">
+                <div class="form-group">
+                    <label class="control-label">Rate </label>
+                    <input type="text" id="rate" name="rate">
+                </div>
+            </div>
+            <div class="col-md-2 col-xs-12">
+                <div class="form-group">
+                    <label class="control-label">Amount </label>
+                    <input type="text" id="amt" name="amount">
+                </div>
+            </div>
+            <div class="col-md-1 col-xs-12">
+                <div class="form-group">
+                    <br />
+                    <a class="btn btn-xs btn-success" id="adddata" title="Add">Add</a>
+                </div>
+            </div>
+        </div>
+        <div id="tadd">
+            <table class="table table-bordered noDataTable" id="tbl_create">
+                <thead class="thead-dark" style="height:20px">
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Unit</th>
+                        <th>Qty</th>
+                        <th>Rate</th>
+                        <th>Amount</th>
+                        <th class="hidden">TempPurId</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="datalist"></tbody>
+                <tfoot>
+                    <tr id="tfooter"></tr>
+                </tfoot>
+
+            </table>
+        </div>
+
+    </fieldset>
+    <fieldset style="list-style: circle; list-style-type: circle; width: 98%;">
+        <legend style="color:forestgreen;font:bold;font-size:small">Dispose Information:</legend>
+        <div class="row">
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.RequestDate, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.RequestDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(x => x.RequestDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.Label("Forwarded For Approval", htmlAttributes: new { @class = "control-label" })
+                    @Html.DropDownListFor(model => model.ForwardedForApproval, Model.EmployeeNameList, new { @class = "form-control selectSearch" })
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset style="list-style: circle; list-style-type: circle; width: 98%;">
+        <legend style="color:forestgreen;font:bold;font-size:small">Disposed Notes:</legend>
+        @Html.TextAreaFor(model => model.DisposeReason, new { rows = "3", cols = "150" })
+    </fieldset>
+    <div class="box-footer">
+        <div class="col-md-12 col-md-offset-8">
+            <button type="button" data-loading-text="Saving..Please Wait.." id="savedispose" class="btn btn-success"><i class="fa fa-save"></i> Request For Dispose</button>
+            <a href="/DisposeProduct/Index" class="btn btn-default"><i class="fa fa-close"></i> Cancel</a>
+        </div>
+    </div>
+</div>
+</div>
+<div class="modal fade" id="myModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="color:chocolate"><i class="fa fa-info-circle fa-lg"></i> <strong>Product Other Information</strong></h4>
+            </div>
+            <div class="modal-body list-modal">
+                <div id="prodinfo">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-xs btn-success serialnosave" title="Save">Save</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/Areas/DisposeProduct/RequestForDispose.js"></script>
+

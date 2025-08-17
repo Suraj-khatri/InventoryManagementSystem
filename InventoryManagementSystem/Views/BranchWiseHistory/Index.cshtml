@@ -1,0 +1,422 @@
+﻿@model  InventoryManagementSystem.Domain.InRequisitionMessageVM
+@{
+    ViewBag.Title = "Requisition History List - Branch Wise";
+}
+<style>
+
+    .box-body input, select, textarea {
+        max-width: 740px;
+        resize: none;
+    }
+</style>
+@using (Html.BeginForm("Index", "BranchWiseHistory", FormMethod.Post, new { id = "detinfo" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <div class="box-title">
+                <i class="fa fa-list"></i> Requisition History List - Branch Wise
+            </div>
+        </div>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-2 col-xs-12">
+                    <label class="control-label">Branch Name</label>
+                </div>
+                <div class="col-md-4 col-xs-12">
+                    @Html.DropDownListFor(model => model.branch_id, Model.BranchNameList, new { @class = "form-control selectSearch", @id = "branchname" })
+                </div>
+                <div class="col-md-1 col-xs-12">
+                    <button type="submit" class="btn btn-success pull-right"> Search</button>
+                </div>
+            </div>
+        </div>
+        <div class="box-body tablefont" style="overflow:auto;">
+            <table class="table table-responsive table-condensed table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>S.N</th>
+                        <th>Req. No</th>
+                        <th>Requested <br /> By</th>
+                        <th>Requested <br /> Date</th>
+                        <th>Requesting <br /> Branch</th>
+                        <th>Requested <br /> Dept.</th>
+                        <th>Forwarded <br /> To</th>
+                        <th>Forwarded <br /> Branch</th>
+                        <th>Dispatch Date</th>
+                        <th>Status</th>
+                        <th>Req.</th>
+                        <th>Recom.</th>
+                        <th>Appr.</th>
+                        <th>Disp.</th>
+                        <th>Ack.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ int i = 1;}
+                    @foreach (var item in Model.InRequisitionMessageVMList)
+                    {
+                        <tr>
+                            <td>@i</td>
+                            <td>
+                                @Html.DisplayFor(model => item.Req_no)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.RequestedBy)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.Requ_date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.RequestingBranch)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.RequestingDepartment)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.ApprovedBy)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.ForwardedBranch)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(model => item.Delivered_Date)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.status)
+                            </td>
+                            <td>
+                                @if (item.status == "Rejected" || item.status == "Requested" || item.status == "Recommended" || item.status == "Approved" || item.status == "Full Dispatched" || item.status == "Full Acknowledged")
+                                {
+                                    <a href="@Url.Action("ViewRequestedDetails","BranchWiseHistory",new{id=item.id})" class="btn btn-xs btn-info" title="View"><i class="fa fa-eye"></i></a>
+                                }
+                            </td>
+                            <td>
+                                @if (item.status == "Rejected" || item.status == "Recommended" || item.status == "Approved" || item.status == "Full Dispatched" || item.status == "Full Acknowledged")
+                                {
+                                    <a href="@Url.Action("ViewRecommendDetails","BranchWiseHistory",new{id=item.id})" class="btn btn-xs btn-info" title="View"><i class="fa fa-eye"></i></a>
+                                }
+                            </td>
+                            <td>
+                                @if (item.status == "Rejected" || item.status == "Approved" || item.status == "Full Dispatched" || item.status == "Full Acknowledged")
+                                {
+
+                                    <a href="@Url.Action("ViewApprovedDetails", "BranchWiseHistory", new { id = item.id })" class="btn btn-xs btn-info" title="View"><i class="fa fa-eye"></i></a>
+                                }
+                            </td>
+                            <td>
+                                @if (item.status == "Rejected" || item.status == "Full Dispatched" || item.status == "Full Acknowledged")
+                                {
+
+                                    <a href="@Url.Action("ViewDispatchedDetails", "BranchWiseHistory", new { id = item.id })" class="btn btn-xs btn-info" title="View"><i class="fa fa-eye"></i></a>
+                                    <a class="btn btn-primary btn-xs" title="Print" data-toggle="modal" data-target="#DispatchSlip" onclick="return GetDispatchData(@Json.Encode(item),'@(item.Requ_date.ToString("yyyy-MM-dd"))','@(item.Delivered_Date?.ToString("yyyy-MM-dd"))') "><i class="fa fa-print"></i></a>
+
+
+                                }
+                            </td>
+                            <td>
+                                @if (item.status == "Full Acknowledged")
+                                {
+
+                                    <a href="@Url.Action("ViewAcknowledgedDetails", "BranchWiseHistory", new { id = item.id })" class="btn btn-xs btn-info" title="View"><i class="fa fa-eye"></i></a>
+                                }
+                            </td>
+                        </tr>
+                        i++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="DispatchSlip" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <button class="btn btn-default btn-sm pull-right" title="Print" style="margin-top:-9px;margin-right:25px" onclick="printDispatchDetails()">
+                    <i class="fa fa-print"></i>
+                </button>
+            </div>
+
+            <div id="printdispatchdata" style="min-height:100mm; padding:20px; font-family:'Arial' !important">
+                <div class=" modal-body">
+                    <img style="height:50px;width:200px" src="~/BankImages/laxmilogo.png" />
+                    <header style="text-align:center">
+                        <h4 style="font:bold">Items To Dispatch</h4>
+                    </header>
+                    <div style="font-size:13px;display:flex;flex-direction:row;width:100%">
+                        <div style="display:flex;flex-direction:column;width:60%">
+                            <p><span style="font-weight:bold">Requesting User : </span><span id="requser"></span> </p>
+                            <p><span style="font-weight:bold">Request Date : </span><span id="reqdate"></span> </p>
+                            <p><span style="font-weight:bold">Requesting Branch : </span><span id="reqbranch"></span> </p>
+                            <p><span style="font-weight:bold">Requesting Dept. : </span><span id="reqdept"></span> </p>
+                            <p><span style="font-weight:bold">Requesting Branch Contact No. : </span><span id="reqcontno"></span> </p>
+                        </div>
+                        <div style="display:flex;flex-direction:column;width:40%">
+                            <p><span style="font-weight:bold">Req No. : </span><span id="reqno"></span> </p>
+                            <p><span style="font-weight:bold">Dispatching Branch : </span><span id="dispbranch"></span> </p>
+                            <p><span style="font-weight:bold">Dispatching Dept. : </span><span id="dispdept"></span> </p>
+                            <p><span style="font-weight:bold">Dispatching User : </span><span id="dispuser"></span> </p>
+                            <p><span style="font-weight:bold">Dispatch Date : </span><span id="dispdate"></span> </p>
+                        </div>
+                    </div>
+                    <br />
+                    <table style="font-size:11px" class="table table-responsive table-condensed table-bordered noDataTable">
+                        <thead>
+                            <tr>
+                                <th style="width:3%;">
+                                    S.N
+                                </th>
+                                <th>
+                                    Product Name
+                                </th>
+                                <th>
+                                    Unit
+                                </th>
+                                <th style="text-align:center">
+                                    Approved Qty
+                                </th>
+                                <th style="text-align:center">
+                                    Dispatch Qty
+                                </th>
+                                <th style="text-align:center">
+                                    Remain Qty
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="dispatchdatalist"></tbody>
+                    </table>
+                    <hr />
+                    <br />
+                    <div class="pull-right">
+                        <p>________________</p>
+                        <p style="margin-left: 15%">Store Kepper</p>
+                    </div>
+                    <br /><br /><hr />
+                    <p class="pull-left" style="margin-left:5px">Print Date: @DateTime.Now.ToString("yyyy-MM-dd")</p>
+                    <p class="pull-right" style="margin-right:5px">Printed By : @Session["UserId"].ToString()</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="SerialProductModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="color:chocolate"><i class="fa fa-info-circle fa-lg"></i> <strong>Product Other Information</strong></h4>
+            </div>
+            <div class="modal-body list-modal">
+                <div id="prodinfo">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-xs btn-success serialnosave" title="Save">Save</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var tsum = 0.00;
+    var vatamt = 0.00;
+    var serialnototalqty = 0;
+    var tqty = 0;
+    var tpname = "";
+
+    function GetDispatchData(data, reqdate, dispdate) {
+        $('#dispatchdatalist').empty();
+        $('#reqno').html(data.Req_no);
+        $('#requser').html(data.RequestedBy);
+        $('#reqdate').html(reqdate);
+        $('#dispdate').html(dispdate);
+        $('#reqbranch').html(data.RequestingBranch);
+        $('#reqdept').html(data.RequestingDepartment);
+        $('#reqcontno').html(data.RequestingContactNo);
+        $('#dispbranch').html(data.ForwardedBranch);
+        $('#dispdept').html(data.ForwardedDepartment);
+        $('#dispuser').html(data.DispatchedBy);
+
+        $.ajax({
+            url: '/BranchWiseHistory/PrintDispatchedDetails',
+            type: 'GET',
+            datatype: 'json',
+            data: { id: data.id },
+            success: function (data) {
+                var j = 1;
+                if (data.indispList.length > 0) {
+                    $.each(data.indispList, function (i, item) {
+                        var rows = "<tr>" +
+                            "<td style=''>" + j++ + "</td>" +
+                            "<td style=''>" + item.productname + "</td>" +
+                            "<td>" + item.unit + "</td>" +
+                            "<td style='text-align:center;'>" + item.approveqty + "</td>" +
+                            "<td style='text-align:center;'>" + item.dispatched_qty + "</td>" +
+                            "<td style='text-align:center;'>" + (item.approveqty - item.dispatched_qty) + "</td>" +
+                            "</tr>";
+                        $('#dispatchdatalist').append(rows);
+                    });
+                }
+                else {
+                    $('#dispatchdatalist').append("<b class='text-danger'> Sorry no Records found </b>");
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log("Can't get the dispatched items.")
+            }
+        });
+    }
+
+    function GetApproveData(data) {
+        $('#approvedatalist').empty();
+        $("#masterCheck").prop("checked", false);
+        $.ajax({
+            url: '/BranchWiseHistory/PODetails',
+            type: 'GET',
+            datatype: 'json',
+            data: { id: data.id },
+            success: function (data) {
+                var j = 1;
+                if (data.inreqList.length > 0) {
+                    $.each(data.inreqList, function (i, item) {
+                        if (item.serialstatus == true) {
+                            var rows = "<tr>" +
+                                "<td style=''>" + j++ + "</td>" +
+                                "<td style=''>" + item.ProductName + "</td>" +
+                                "<td>" + item.unit + "</td>" +
+                                "<td style='text-align:center;'>" + item.Approved_Quantity + "</td>" +
+                                "<td style='text-align:center;'>" + item.stockinhand + "</td>" +
+                                "<td style='text-align:center;'>" + "<input type='checkbox' name='row-check' />" + "</td>" +
+                                "<td style='text-align:center;'>" + item.p_rate + "</td>" +
+                                "<td class='TotalAmount' style='text-align:center;'>" + (item.p_rate * item.Approved_Quantity) + "</td>" +
+                                "<td>" + '<a class="btn btn-xs btnAdd" data-toggle="modal" data-target="#SerialProductModal">Add</a>' + "</td>" +
+                                "</tr>";
+                        }
+                        else {
+                            var rows = "<tr>" +
+                                "<td style=''>" + j++ + "</td>" +
+                                "<td id='pname' style=''>" + item.ProductName + "</td>" +
+                                "<td>" + item.unit + "</td>" +
+                                "<td id='pqty' style='text-align:center;'>" + item.Approved_Quantity + "</td>" +
+                                "<td style='text-align:center;'>" + item.stockinhand + "</td>" +
+                                "<td style='text-align:center;'>" + "<input type='checkbox' name='row-check' />" + "</td>" +
+                                "<td style='text-align:center;'>" + item.p_rate + "</td>" +
+                                "<td class='TotalAmount' style='text-align:center;'>" + (item.p_rate * item.Approved_Quantity) + "</td>" +
+                                "</tr>";
+                        }
+                        $('#approvedatalist').append(rows);
+                        footer();
+                    });
+                }
+                else {
+                    $('#approvedatalist').append("<b class='text-danger'> Sorry no Records found </b>");
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log("Can't get the aprroved items.")
+            }
+        });
+    }
+
+    function printDispatchDetails() {
+        $("#printdispatchdata").printThis({
+            removeInline: false,
+            pageTitle: "Dispatch Items Details",
+            header: null
+        });
+    }
+
+    function printPODetails() {
+        $("#printpodata").printThis({
+            removeInline: false,
+            pageTitle: "Purchase Order Entry",
+            header: null
+        });
+    }
+
+    $(function () {
+        $("#masterCheck").on("click", function () {
+            if ($("input:checkbox").prop("checked")) {
+                $("input:checkbox[name='row-check']").prop("checked", true);
+            } else {
+                $("input:checkbox[name='row-check']").prop("checked", false);
+            }
+        });
+    });
+
+    function footer() {
+        var total = 0
+        $('#tfooter').empty();
+        $('.TotalAmount').each(function () {
+            total += parseFloat($(this).text());
+        });
+        tsum = total;
+
+        vatamt = parseFloat(13 / 100 * tsum);
+
+        $('#tfooter').append('<th>' + '</th>' +
+            '<th>' + '</th>' +
+            '<th>' + '</th>' +
+            '<th>' + '</th>' +
+            '<th>' + '</th>' +
+            '<th>' + '</th>' +
+            '<th>' + 'Sub Total :' + '</br>' + '13% VAT :' + '</br>' + 'Total Amount: ' + '</th > ' +
+            '<th id="sumtot">' + (tsum).toFixed(2) + '</br>' + vatamt.toFixed(2) + '</br>' + (parseFloat(tsum) + parseFloat(vatamt)).toFixed(2) + '</th' +
+            '<th>' + '</th >' +
+            '<th>' + '</th >');
+    }
+
+    $("#approvedatalist").on('click', '.btnAdd', function () {
+        $('#prodinfo').empty();
+        serialnototalqty = 0;
+        tpname = $(this).closest('tr').find("#pname").text();
+        tqty = $(this).closest('tr').find("#pqty").text();
+        $('#SerialProductModal').show();
+
+        var rows = 'Product Name : ' + tpname + '&nbsp' + '&nbsp' + 'Total Qty : ' + tqty +
+            '<fieldset id="addtbllist" style="list-style: circle; list-style-type: circle; width: 100%;">' +
+            '<legend style="color:forestgreen;font-size:small;font:bold">Other Information:</legend>' +
+            '<div class="col-md-3 col-xs-12">' +
+            '<div class="form-group">' +
+            '<label class="control-label">Qty: </label>' +
+            '<input type="number" id="qtysn" name="qty">' +
+            '</div>' +
+            '</div>' +
+            '<div class="col-md-3 col-xs-12">' +
+            '<div class="form-group">' +
+            '<label class="control-label">S.N From:  </label>' +
+            '<input type="number" id="snf" name="snf">' +
+            '</div>' +
+            '</div>' +
+            '<div class="col-md-3 col-xs-12">' +
+            '<div class="form-group">' +
+            '<label class="control-label">S.N. To: </label>' +
+            '<input type="number" readonly id="snt" name="snt">' +
+            '</div>' +
+            '</div>' +
+            '<div class="col-md-3 col-xs-12">' +
+            '<a class="btn btn-xs btn-success pull-right addsnlist" title="Add">Add</a>' +
+            '</div>' +
+            '<table class="table table-bordered noDataTable">' +
+            '<thead class="thead-dark" style="height:20px">' +
+            '<tr>' +
+            '<th>Serial From</th>' +
+            '<th>Serial To</th>' +
+            '<th id="tpoqty">Qty</th>' +
+            //'<th>Action</th>' +
+            '</tr>' +
+            '</thead>' +
+            '<tbody id ="datalistsn">' +
+            '</tbody>' +
+            '</table >'
+        '</fieldset >'
+        $('#prodinfo').append(rows);
+    });
+</script>

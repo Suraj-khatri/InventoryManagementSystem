@@ -1,0 +1,261 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.5.1\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" />
+  <Import Project="..\InventoryManagementSystem\packages\EntityFramework.6.3.0\build\EntityFramework.props" Condition="Exists('..\InventoryManagementSystem\packages\EntityFramework.6.3.0\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B09CD41A-D896-46B6-B63E-69DBC6E7520C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>InventoryManagementSystem.Infrastructure</RootNamespace>
+    <AssemblyName>InventoryManagementSystem.Infrastructure</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\InventoryManagementSystem\packages\Dapper.2.0.4\lib\netstandard2.0\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\MicrosoftReportViewerWebForms.11.0.0.0\lib\Microsoft.ReportViewer.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\MicrosoftReportViewerWebForms.11.0.0.0\lib\Microsoft.ReportViewer.ProcessingObjectModel.DLL</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\MicrosoftReportViewerWebForms.11.0.0.0\lib\Microsoft.ReportViewer.WebForms.DLL</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\InventoryManagementSystem\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\InventoryManagementSystem\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\InventoryManagementSystem\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\InventoryManagementSystem\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\InventoryManagementSystem\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\InventoryManagementSystem\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\InventoryManagementSystem\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DapperRepo\DapperRepoServices.cs" />
+    <Compile Include="DapperRepo\DashboardDapperRepoServices.cs" />
+    <Compile Include="Filter\UserAuthorize.cs" />
+    <Compile Include="Interface\IAdminRepo.cs" />
+    <Compile Include="Interface\IAssetBranchRepo.cs" />
+    <Compile Include="Interface\IAssetInventoryTempRepo.cs" />
+    <Compile Include="Interface\IAssetItemRepo.cs" />
+    <Compile Include="Interface\IAssetNumberSequenceRepo.cs" />
+    <Compile Include="Interface\IAssetProductRepo.cs" />
+    <Compile Include="Interface\IAssetRequisitionMessageRepo.cs" />
+    <Compile Include="Interface\IAssetRequisitionRepo.cs" />
+    <Compile Include="Interface\IBillInfoRepo.cs" />
+    <Compile Include="Interface\IBillSettingRepo.cs" />
+    <Compile Include="Interface\IBranchAssignRepo.cs" />
+    <Compile Include="Interface\IBranchRepo.cs" />
+    <Compile Include="Interface\IChangesApprovalQueueRepo.cs" />
+    <Compile Include="Interface\ICompanyRepo.cs" />
+    <Compile Include="Interface\IDepartmentRepo.cs" />
+    <Compile Include="Interface\IEmployeeContractRepo.cs" />
+    <Compile Include="Interface\IEmployeeLogRepo.cs" />
+    <Compile Include="Interface\IEmployeeRepo.cs" />
+    <Compile Include="Interface\IFuelRequestDetailRepo.cs" />
+    <Compile Include="Interface\IFuelRequestMessageRepo.cs" />
+    <Compile Include="Interface\IFuelRequestRepo.cs" />
+    <Compile Include="Interface\IInDispatchMessageRepo.cs" />
+    <Compile Include="Interface\IInDispatchRepo.cs" />
+    <Compile Include="Interface\IInDisposeDetailsRepo.cs" />
+    <Compile Include="Interface\IInDisposeMessageRepo.cs" />
+    <Compile Include="Interface\IInNotificationsRepo.cs" />
+    <Compile Include="Interface\IInPurchaseRepo.cs" />
+    <Compile Include="Interface\IInPurchaseReturnDetailsRepo.cs" />
+    <Compile Include="Interface\IInPurchaseReturnRepo.cs" />
+    <Compile Include="Interface\IInReceivedMessageRepo.cs" />
+    <Compile Include="Interface\IInReceivedRepo.cs" />
+    <Compile Include="Interface\IInRequisitionDetailOtherRepo.cs" />
+    <Compile Include="Interface\IInRequisitionDetailRepo.cs" />
+    <Compile Include="Interface\IInRequisitionMessageRepo.cs" />
+    <Compile Include="Interface\IInRequisitionRepo.cs" />
+    <Compile Include="Interface\IInTempRequisitionRepo.cs" />
+    <Compile Include="Interface\INotificationRepo.cs" />
+    <Compile Include="Interface\INotificationTypeRepo.cs" />
+    <Compile Include="Interface\INotificationUserRepo.cs" />
+    <Compile Include="Interface\IOtherBillsInfoRepo.cs" />
+    <Compile Include="Interface\IPurchaseOrderMessageHistoryRepo.cs" />
+    <Compile Include="Interface\IPurchaseOrderMessageRepo.cs" />
+    <Compile Include="Interface\IPurchaseOrderReceivedRepo.cs" />
+    <Compile Include="Interface\IPurchaseOrderRepo.cs" />
+    <Compile Include="Interface\IRoleDetailsRepo.cs" />
+    <Compile Include="Interface\ISerialProductStockHistoryRepo.cs" />
+    <Compile Include="Interface\ISerialProductStockRepo.cs" />
+    <Compile Include="Interface\ISerialProductTransferBranchRepo.cs" />
+    <Compile Include="Interface\IStaticDataDetailRepo.cs" />
+    <Compile Include="Interface\IStaticDataTypeRepo.cs" />
+    <Compile Include="Interface\IStaticTempDispatchRepo.cs" />
+    <Compile Include="Interface\ISuperVisorAssignmentRepo.cs" />
+    <Compile Include="Interface\ITempDisposeOtherRepo.cs" />
+    <Compile Include="Interface\ITempDisposeRepo.cs" />
+    <Compile Include="Interface\ITempPurchaseOtherRepo.cs" />
+    <Compile Include="Interface\ITempPurchaseRepo.cs" />
+    <Compile Include="Interface\ITempReturnProductRepo.cs" />
+    <Compile Include="Interface\IUserFunctionRepo.cs" />
+    <Compile Include="Interface\IUserRoleRepo.cs" />
+    <Compile Include="Interface\IVendorAssignRepo.cs" />
+    <Compile Include="Interface\IVendorRepo.cs" />
+    <Compile Include="Interface\IDropDownList.cs" />
+    <Compile Include="Interface\IInItemRepo.cs" />
+    <Compile Include="Interface\IInProductRepo.cs" />
+    <Compile Include="Interface\IUnitOfWork.cs" />
+    <Compile Include="Mapper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\AdminRepo.cs" />
+    <Compile Include="Repository\AssetBranchRepo.cs" />
+    <Compile Include="Repository\AssetInventoryTempRepo.cs" />
+    <Compile Include="Repository\AssetItemRepo.cs" />
+    <Compile Include="Repository\AssetNumberSequenceRepo.cs" />
+    <Compile Include="Repository\AssetProductRepo.cs" />
+    <Compile Include="Repository\AssetRequisitionMessageRepo.cs" />
+    <Compile Include="Repository\AssetRequisitionRepo.cs" />
+    <Compile Include="Repository\BillInfoRepo.cs" />
+    <Compile Include="Repository\BillSettingRepo.cs" />
+    <Compile Include="Repository\BranchAssignRepo.cs" />
+    <Compile Include="Repository\BranchRepo.cs" />
+    <Compile Include="Repository\ChangesApprovalQueueRepo.cs" />
+    <Compile Include="Repository\CompanyRepo.cs" />
+    <Compile Include="Repository\DepartmentRepo.cs" />
+    <Compile Include="Repository\EmployeeContractRepo.cs" />
+    <Compile Include="Repository\EmployeeLogRepo.cs" />
+    <Compile Include="Repository\EmployeeRepo.cs" />
+    <Compile Include="Repository\FuelRequestMessageRepo.cs" />
+    <Compile Include="Repository\FuelRequestRepo.cs" />
+    <Compile Include="Repository\InDispatchMessageRepo.cs" />
+    <Compile Include="Repository\InDispatchRepo.cs" />
+    <Compile Include="Repository\InDisposeDetailsRepo.cs" />
+    <Compile Include="Repository\InDisposeMessageRepo.cs" />
+    <Compile Include="Repository\InNotificationsRepo.cs" />
+    <Compile Include="Repository\InPurchaseRepo.cs" />
+    <Compile Include="Repository\InPurchaseReturnDetailsRepo.cs" />
+    <Compile Include="Repository\InPurchaseReturnRepo.cs" />
+    <Compile Include="Repository\InReceivedMessageRepo.cs" />
+    <Compile Include="Repository\InReceivedRepo.cs" />
+    <Compile Include="Repository\InRequisitionDetailOtherRepo.cs" />
+    <Compile Include="Repository\InRequisitionDetailRepo.cs" />
+    <Compile Include="Repository\InRequisitionMessageRepo.cs" />
+    <Compile Include="Repository\InRequisitionRepo.cs" />
+    <Compile Include="Repository\InTempRequisitionRepo.cs" />
+    <Compile Include="Repository\NotificationRepo.cs" />
+    <Compile Include="Repository\NotificationTypeRepo.cs" />
+    <Compile Include="Repository\NotificationUserRepo.cs" />
+    <Compile Include="Repository\OtherBillsInfoRepo.cs" />
+    <Compile Include="Repository\PurchaseOrderMessageHistoryRepo.cs" />
+    <Compile Include="Repository\PurchaseOrderMessageRepo.cs" />
+    <Compile Include="Repository\PurchaseOrderReceivedRepo.cs" />
+    <Compile Include="Repository\PurchaseOrderRepo.cs" />
+    <Compile Include="Repository\RoleDetailsRepo.cs" />
+    <Compile Include="Repository\SerialProductStockHistoryRepo.cs" />
+    <Compile Include="Repository\SerialProductStockRepo.cs" />
+    <Compile Include="Repository\SerialProductTransferBranchRepo.cs" />
+    <Compile Include="Repository\StaticDataDetailRepo.cs" />
+    <Compile Include="Repository\StaticDataTypeRepo.cs" />
+    <Compile Include="Repository\StaticTempDispatchRepo.cs" />
+    <Compile Include="Repository\SuperVisorAssignmentRepo.cs" />
+    <Compile Include="Repository\TempDisposeOtherRepo.cs" />
+    <Compile Include="Repository\TempDisposeRepo.cs" />
+    <Compile Include="Repository\TempPurchaseOtherRepo.cs" />
+    <Compile Include="Repository\TempPurchaseRepo.cs" />
+    <Compile Include="Repository\TempReturnProductRepo.cs" />
+    <Compile Include="Repository\UserFunctionRepo.cs" />
+    <Compile Include="Repository\UserRoleRepo.cs" />
+    <Compile Include="Repository\VendorAssignRepo.cs" />
+    <Compile Include="Repository\VendorRepo.cs" />
+    <Compile Include="Repository\DropDownList.cs" />
+    <Compile Include="Repository\InItemRepo.cs" />
+    <Compile Include="Repository\InProductRepo.cs" />
+    <Compile Include="Repository\UnitOfWork.cs" />
+    <Compile Include="Services\CodeService.cs" />
+    <Compile Include="Services\CompanyServices.cs" />
+    <Compile Include="Services\EmailService.cs" />
+    <Compile Include="Services\HashService.cs" />
+    <Compile Include="Services\LoginService.cs" />
+    <Compile Include="Services\SsrsReportCredential.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InventoryManagementSystem.Data\InventoryManagementSystem.Data.csproj">
+      <Project>{a087fdae-7920-4815-a9a4-dcc61aada97b}</Project>
+      <Name>InventoryManagementSystem.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InventoryManagementSystem.Domain\InventoryManagementSystem.Domain.csproj">
+      <Project>{b13af81f-7bda-416f-aecd-28ece8c48a20}</Project>
+      <Name>InventoryManagementSystem.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\InventoryManagementSystem\packages\EntityFramework.6.3.0\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\InventoryManagementSystem\packages\EntityFramework.6.3.0\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\InventoryManagementSystem\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\InventoryManagementSystem\packages\EntityFramework.6.3.0\build\EntityFramework.targets'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.1\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.1\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\InventoryManagementSystem\packages\EntityFramework.6.3.0\build\EntityFramework.targets" Condition="Exists('..\InventoryManagementSystem\packages\EntityFramework.6.3.0\build\EntityFramework.targets')" />
+  <Import Project="..\packages\EntityFramework.6.5.1\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" />
+</Project>

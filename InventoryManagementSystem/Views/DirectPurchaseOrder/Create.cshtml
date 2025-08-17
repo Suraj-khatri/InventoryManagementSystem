@@ -1,0 +1,176 @@
+﻿@model InventoryManagementSystem.Domain.BillInfoVM
+@{
+    ViewBag.Title = "Purchase Voucher entry";
+}
+<style>
+    input {
+        height: 3rem;
+    }
+
+        input[type=checkbox] {
+            width: 16px;
+            height: 16px;
+        }
+</style>
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="box-title"> <i class="fa fa-arrow-right"></i> Direct    Purchase Voucher Entry</div>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.bill_id)
+        @Html.HiddenFor(x => x.branch_id)
+
+        <div class="box-body formfont">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <p>Please enter valid data! <a style="color:red">(* Required fields)</a></p>
+            <h4 style="margin-bottom:10px; color:chocolate"><i class="fa fa-info-circle"></i> Direct Purchase Voucher Entry</h4>
+            <label class="custom-control-label" style="font-size: 15px" for="defaultUnchecked">Check For Without VAT Purchase</label>
+            <input type="checkbox" class="custom-control-input" id="defaultUnchecked">
+            <fieldset style="list-style: circle; list-style-type: circle; width: 98%;">
+                <legend style="color:forestgreen;font-size:small;font:bold">Product / Account Information:</legend>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.VendorName, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.VendorName, new { htmlAttributes = new { @class = "form-control", id = "vendername" } })
+                        </div>
+                    </div>
+                    @*<div class="col-md-4 col-xs-12 hidden">
+                            <div class="form-group">
+                                <label class="control-label">Bill Amount </label>
+                                @Html.EditorFor(model => model.bill_amount, new { htmlAttributes = new { @class = "form-control", @id = "billamount" } })
+                            </div>
+                        </div>*@
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Product Name </label>
+                            @Html.DropDownListFor(model => model.prod_code, new SelectList(Model.ProductList, "Value", "Text", ""),"--Select--", new { @class="form-control selectSearch", @id="prodname" })
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Unit </label>
+                            <input type="text" readonly="readonly" id="unit" name="unit">
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Qty </label>
+                            <input type="number" id="qty" name="qty">
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Rate </label>
+                            <input type="number" id="rate" name="rate">
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Amount </label>
+                            <input type="number" id="amt" name="amount">
+                        </div>
+                    </div>
+                    <div class="col-md-1 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label" style="color:#fff"> Add</label>
+                            <a class="btn btn-xs btn-success" id="adddata" title="Add">Add</a>
+                        </div>
+                    </div>
+                </div>
+                <div id="tadd">
+                    <table class="table table-bordered noDataTable">
+                        <thead class="thead-dark" style="height:20px">
+                            <tr>
+                                <th class="hidden">P Id</th>
+                                <th>Product Name</th>
+                                <th>Unit</th>
+                                <th>Qty</th>
+                                <th>Rate</th>
+                                <th>Amount</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="datalist"></tbody>
+                        <tfoot>
+                            <tr id="tfooter"></tr>
+                        </tfoot>
+
+                    </table>
+                </div>
+
+            </fieldset>
+            <fieldset style="list-style: circle; list-style-type: circle; width: 98%;">
+                <legend style="color:forestgreen;font:bold;font-size:small">Bill Information:</legend>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.billno, htmlAttributes: new { @class = "control-label required" })
+                            @Html.EditorFor(model => model.billno, new { htmlAttributes = new { @class = "form-control", @id = "billno" } })
+                            @Html.ValidationMessageFor(x => x.billno, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.bill_date, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.bill_date, new { htmlAttributes = new { @class = "form-control", @id = "billdate" } })
+                            @Html.ValidationMessageFor(x => x.bill_date, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.forwarded_to, htmlAttributes: new { @class = "control-label" })
+                            @Html.DropDownListFor(model => model.forwarded_to, Model.EmployeeList, new { @class = "form-control selectSearch", id = "forwarded_to" })
+                            @Html.ValidationMessageFor(x => x.forwarded_to, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.bill_notes, htmlAttributes: new { @class = "control-label required" })
+                            @Html.TextAreaFor(model => model.bill_notes, new { rows = "3", cols = "150", id = "billnotes" })
+                            @Html.ValidationMessageFor(x => x.bill_notes, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="box-footer">
+                <div class="col-md-12 col-md-offset-9">
+                    <button type="button" id="saveorder" class="btn btn-success"><i class="fa fa-save"></i> Save Order</button>
+                    @*<button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save Voucher</button>*@
+                    <a href="/DirectPurchaseOrder/Create" class="btn btn-default"><i class="fa fa-refresh"></i> Refresh</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div class="modal fade" id="myModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="color:chocolate"><i class="fa fa-info-circle fa-lg"></i> <strong>Product Other Information</strong></h4>
+            </div>
+            <div class="modal-body list-modal">
+                <div id="prodinfo">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-xs btn-success serialnosave" title="Save">Save</a>
+                @*<button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/Areas/DirectPurchaseOrder/Create.Js"></script>

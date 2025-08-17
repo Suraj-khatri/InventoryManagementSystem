@@ -1,0 +1,73 @@
+﻿@model  IEnumerable<InventoryManagementSystem.Domain.PurchaseOrderMessageVM>
+@{
+    ViewBag.Title = "Receive Purchase Order ";
+}
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="box-title"><i class="fa fa-list"></i> Receive Purchase Order </div>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body tablefont">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Order No</th>
+                    <th>Order Date</th>
+                    <th>Vendor Name</th>
+                    <th>Approve By</th>
+                    <th>Approve Date</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => item.order_no)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.order_date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.vendorname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.approvername)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.approved_date)
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Create","ReceiveApproveOrder",new { id=item.id})" class="btn btn-xs btn-info" title="Receive Order"><i>Receive Order</i></a>
+                    </td>
+                    <td>
+                        <button type="button" onclick="GeneratePO(@item.id)" class="btn btn-xs btn-info" title="Generate PO"><i>Generate PO</i></button>
+                    </td>
+                    @*<td>
+                        <a href="@Url.Action("Create","ApprovePurchaseOrder",new { id=item.id})" class="btn btn-xs btn-info" title="Close PO"><i>Close PO</i></a>
+                    </td>*@
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="~/Scripts/sweetalert.min.js"></script>
+<script>
+    function GeneratePO(Id) {
+        window.open('/InvPurchaseReport/ReceivedApprovedOrderGeneratePO/' + Id, '_blank');
+    }
+
+    //read ViewBag data
+    var strValue = "@((string)ViewBag.msg)";
+    if (strValue !== null && strValue !== '') {
+        swal("", strValue, "success");
+    }
+</script>

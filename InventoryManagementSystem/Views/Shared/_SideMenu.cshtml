@@ -1,0 +1,79 @@
+﻿ @model InventoryManagementSystem.Domain.RoleSetupVM.SideMenuVM
+<aside class="main-sidebar" >
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+        <div class="sidebar-form">
+            <div class="input-group">
+                <input type="text" id="sidebar-search" name="q" class="form-control" placeholder="Search...">
+                <span class="input-group-btn">
+                    <button type="reset" class="btn btn-flat">
+                        <i class="fa fa-search"></i> 
+                    </button>
+                </span>
+            </div>
+        </div>
+        <!-- /.search form -->
+        <!-- sidebar menu: : style can be found in sidebar.less -->
+        <ul class="sidebar-menu" style="font-size:13px" @*data-widget="tree"*@ data-api="tree" id="sidebar-search-menu">
+            <li class="header" style="font-weight:800;"><span style="padding-left:10px">MENU</span></li>
+            <li>
+                <a href="@Url.Action("Index","Home")">
+                    <i class="fa fa-dashboard"></i><span><b> Dashboard</b></span>
+                </a>
+            </li>
+            @foreach (var Parent in Model.UserFunction.Where(x => x.ParentId == null && x.IsActive == true).OrderBy(x => x.dis_order))
+            {
+                int count = Model.UserFunction.Where(x => x.ParentId == Parent.sno).Count();
+                if (count > 0)
+                {
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="@Parent.Icon"></i> <span>@Parent.function_name</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            @foreach (var Child in Model.UserFunction.Where(x => x.IsActive == true && x.ParentId == Parent.sno).OrderBy(x => x.dis_order))
+                            {
+                                int count1 = Model.UserFunction.Where(x => x.ParentId == Child.sno).Count();
+                                if (count1 > 0)
+                                {
+                                    <li class="treeview">
+                                        <a href="#">
+                                            <i class="@Child.Icon"></i>@Child.function_name
+                                            <span class="pull-right-container">
+                                                <i class="fa fa-angle-left pull-right"></i>
+                                            </span>
+                                        </a>
+                                        <ul class="treeview-menu" style="font-size:12px">
+                                            @foreach (var Child1 in Model.UserFunction.Where(x => x.IsActive == true && x.ParentId == Child.sno).OrderBy(x => x.dis_order))
+                                            {
+                                                <li>
+                                                    <a href="@Child1.link_file">
+                                                        <i class="@Child1.Icon"></i>@Child1.function_name
+                                                    </a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li>
+                                        <a href="@Child.link_file">
+                                            <i class="@Child.Icon"></i>@Child.function_name
+                                        </a>
+                                    </li>
+                                }
+
+                            }
+                        </ul>
+                    </li>
+                }
+            }
+        </ul>
+    </section>
+    <!-- /.sidebar -->
+</aside>
+

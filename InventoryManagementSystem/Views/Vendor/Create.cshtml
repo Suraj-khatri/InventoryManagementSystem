@@ -1,0 +1,170 @@
+﻿@model InventoryManagementSystem.Domain.CustomerVM
+@{
+   ViewBag.Title = Model.ID == 0 ? "Add Vendor" : "Edit Vendor";
+}
+
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <div class="box-title">@((Model.ID > 0) ? Html.Raw("<i class='fa fa-pencil'></i> Edit Vendor") : Html.Raw("<i class='fa fa-plus'></i> Add Vendor"))</div>
+            <div class="box-tools pull-right">
+                <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(x => x.ID)
+    <div class="box-body formfont">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <p>Please enter valid data! <a style="color:red">(* Required fields)</a></p>
+        <h4 style="margin-bottom:-10px;"><i class="fa fa-info-circle"></i> Vendor General Information</h4>
+        <hr />
+        <div class="row">
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CustomerName, htmlAttributes: new { @class = "control-label required" })
+                    @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(x => x.CustomerName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CustomerAddress, htmlAttributes: new { @class = "control-label required" })
+                    @Html.EditorFor(model => model.CustomerAddress, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(x => x.CustomerAddress, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CustomerTelNo, htmlAttributes: new { @class = "control-label required" })
+                    @Html.EditorFor(model => model.CustomerTelNo, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(x => x.CustomerTelNo, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CustomerTelNoSec, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.CustomerTelNoSec, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CustomeFax, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.CustomeFax, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CustomerPANNo, htmlAttributes: new { @class = "control-label required" })
+                    @Html.EditorFor(model => model.CustomerPANNo, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(x => x.CustomerPANNo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CustomerEmail, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.CustomerEmail, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CustomerWebsite, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.CustomerWebsite, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.BusinessDetails, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextAreaFor(model => model.BusinessDetails, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label" })
+                    <div>
+                        @Html.RadioButtonFor(model => model.IsActive, true) Yes
+                        @Html.RadioButtonFor(model => model.IsActive, false) No
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h4 style="margin-bottom:-10px;"><i class="fa fa-info-circle"></i> Vendor Contact Person Information</h4>
+        <hr />
+        <div class="row">
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ContactPersonFirst, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.ContactPersonFirst, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ContactPersonMobile1, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.ContactPersonMobile1, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ContactPersonEmail1, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.ContactPersonEmail1, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ContactPersonSec, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.ContactPersonSec, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ContactPersonMobile2, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.ContactPersonMobile2, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ContactPersonEmail2, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.ContactPersonEmail2, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ContactPersonThird, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.ContactPersonThird, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ContactPersonMobile3, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.ContactPersonMobile3, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ContactPersonEmail3, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.ContactPersonEmail3, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <div class="col-md-12 col-md-offset-9">
+                <a href="/Vendor/Index" class="btn btn-default"><i class="fa fa-close"></i> Cancel</a>
+                <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
+            </div>
+        </div>
+    </div>
+        }
+    </div>

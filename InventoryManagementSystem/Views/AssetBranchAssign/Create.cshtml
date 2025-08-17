@@ -1,0 +1,189 @@
+﻿@model InventoryManagementSystem.Domain.FixedAssetsViewModel.AssetBranchVM
+
+@{
+    ViewBag.Title = "Assign Branch";
+}
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="box-title">@((Model.ID > 0) ? Html.Raw("<i class='fa fa-pencil'></i> Edit Branch Assign for " + Model.AssetProduct.porduct_code) : Html.Raw("<i class='fa fa-plus'></i> Branch Assign for " + Model.AssetProduct.porduct_code))</div>
+        @*<div class="box-title">Branch Assign For @(Model.INPRODUCTs.porduct_code)</div>*@
+        <div class="box-tools pull-right">
+            <a href="/InProduct/Index/@(Model.AssetProduct.AssetItems.parent_id)" class="btn btn-default btn-sm">
+                <i class="fa fa-list"></i>
+                Back to List
+            </a>
+            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                <i class="fa fa-minus" id="minusBtn"></i> Add
+            </button>
+        </div>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.ID)
+
+        <div class="box-body formfont">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="row">
+                @if (Model.ID == 0)
+                {
+                    <div class="col-md-3 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Branches.BRANCH_NAME, htmlAttributes: new { @class = "control-label" })
+                            @Html.DropDownListFor(model => model.BRANCH_ID, Model.BranchList, new { @class = "form-control selectSearch" })
+                            @Html.ValidationMessageFor(x => x.BRANCH_ID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    @Html.HiddenFor(x => x.Branches.BRANCH_GROUP)
+                    @Html.HiddenFor(x => x.Branches.BRANCH_SHORT_NAME)
+                    @Html.HiddenFor(x => x.Branches.BRANCH_NAME)
+                    @Html.HiddenFor(x => x.Branches.BRANCH_Municipality)
+                    @Html.HiddenFor(x => x.Branches.BRANCH_PHONE)
+                    @Html.HiddenFor(x => x.Branches.BRANCH_DISTRICT)
+                    @Html.HiddenFor(x => x.Branches.Batch_Code)
+                    @Html.HiddenFor(x => x.Branches.BRANCH_ADDRESS)
+                    @Html.HiddenFor(x => x.Branches.BRANCH_COUNTRY)
+                    <div class="col-md-3 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Branches.BRANCH_NAME, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.BranchName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                }
+                <div class="col-md-3 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ASSET_AC, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.ASSET_AC, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <div class="col-md-3 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.DEPRECIATION_EXP_AC, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.DEPRECIATION_EXP_AC, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <div class="col-md-3 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ACCUMULATED_DEP_AC, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.ACCUMULATED_DEP_AC, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.WRITE_OFF_EXP_AC, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.WRITE_OFF_EXP_AC, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <div class="col-md-3 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SALES_PROFIT_LOSS_AC, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.SALES_PROFIT_LOSS_AC, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <div class="col-md-3 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.MAINTAINANCE_EXP_AC, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.MAINTAINANCE_EXP_AC, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <div class="col-md-3 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.IS_ACTIVE, htmlAttributes: new { @class = "control-label" })
+                        <div>
+                            @Html.RadioButtonFor(model => model.IS_ACTIVE, true) Yes
+                            @Html.RadioButtonFor(model => model.IS_ACTIVE, false) No
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box-footer">
+                <div class="col-md-12 col-md-offset-9">
+                    <a href="/AssetProduct/Index/@(Model.AssetProduct.AssetItems.parent_id)" class="btn btn-default"><i class="fa fa-close"></i> Cancel</a>
+                    <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="box-title"><i class="fa fa-list"></i> Assigned Branch For @(Model.AssetProduct.porduct_code) </div>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body formfont">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Branch Name</th>
+                    <th>Product Name</th>
+                    @*<th>Asset A/C</th>
+                    <th>Depreciation A/C</th>
+                    <th>Write Off A/C</th>
+                    <th>Sales Profit Loss A/C</th>*@
+                    <th>Is Active</th>
+                </tr>
+            </thead>
+            @if (Model.AssetBranchVMList != null)
+            {
+                <tbody id="commissionList">
+                    @{ int i = 1;}
+                    @foreach (var item in Model.AssetBranchVMList)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(model => item.BranchName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.ProductName)
+                        </td>
+                        @*<td>
+                            @Html.DisplayFor(model => item.ASSET_AC)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.DEPRECIATION_EXP_AC)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.WRITE_OFF_EXP_AC)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.SALES_PROFIT_LOSS_AC)
+                        </td>*@
+                        <td>
+                            @Html.DisplayFor(model => item.IS_ACTIVE)
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Edit","AssetBranchAssign",new{id=item.ID })" class="btn btn-xs btn-info" title="Edit"><i class="fa fa-edit"></i></a>
+                            @if (item.IS_ACTIVE == true)
+                            {
+                                <a onclick="confirm('Are you sure?') ? $('#DeleteForm_@item.ID').submit() : null;" class="btn btn-xs btn-danger" title="Remove">
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            }
+                            @using (Html.BeginForm("Delete", "AssetBranchAssign", FormMethod.Post, new { id = "DeleteForm_" + item.ID }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <input id="id" name="id" value="@item.ID" style="display:none;" readonly="readonly" />
+                            }
+                        </td>
+
+                    </tr>
+                        i++;
+                    }
+                </tbody>
+            }
+        </table>
+    </div>
+</div>
+@Scripts.Render("~/bundles/jqueryval")
+

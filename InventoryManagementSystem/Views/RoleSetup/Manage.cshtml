@@ -1,0 +1,114 @@
+﻿@model InventoryManagementSystem.Domain.RoleSetupVM.RoleDetailsVM
+@{
+    ViewBag.Title = "Role Setup";
+}
+@{int v = 0;}
+@{int k = 0;}
+@using (Html.BeginForm())
+{
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <div class="box-title"> <i class="fa fa-arrow-right"></i> Role Setup</div>
+            <div class="box-tools pull-right">
+                <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body formfont">
+
+            @Html.AntiForgeryToken()
+
+            <div class="row">
+                <div class="col-md-2 col-xs-12">
+                    <label class="control-label">Choose Role </label>
+                </div>
+                <div class="col-md-8 col-xs-12">
+                    @Html.DropDownListFor(model => model.role_id, Model.UserRoleList, new { @class = "form-control selectSearch", @id = "userrole" })
+                </div>
+            </div>
+            <br />
+            <ul class="sidebar-menu col-md-5" data-widget="tree" data-api="tree" data-accordion=0 id="sidebar-search-menu">
+
+                @foreach (var Parent in Model.UserFunctionVMList.Where(x => x.ParentId == null && x.IsActive == true && x.function_name != "Dashboard".Trim()).OrderBy(x => x.dis_order))
+                {
+                    <li class="treeview active">
+                        <a href="#">
+                            <span id="@("parentid" + k)" style="display:none">@Parent.sno</span>
+                            <span id="@("parentname"+k)">@Parent.function_name</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+                        <ul class="treeview-menu">
+                            @foreach (var Child in Model.UserFunctionVMList.Where(x => x.ParentId == Parent.sno && x.IsActive == true).OrderBy(x => x.dis_order))
+                            {
+                                <li>
+                                    <span id="@("sno" + v)" style="display:none">@Child.sno</span>
+                                    <a>
+                                        <span id="@("fname" + v)">@Child.function_name</span>
+                                        <div class="col-md-2">
+                                            <input type="checkbox" id="@("IsActive" + v)" name="@("fsno" + Child.sno)" />
+                                        </div>
+                                    </a>
+                                </li>
+                                v++;
+                            }
+                        </ul>
+                    </li>
+                    k++;
+                }
+            </ul>
+        </div>
+        <div class="box-footer">
+            <div class="col-md-12 col-md-offset-3">
+                <a href="@Url.Action("Index","Home")" class="btn btn-default"><i class="fa fa-close"></i> Cancel</a>
+                <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+        getAssignedSno();
+    })
+    var roleDetail = {}
+    var roleDetails = []
+    $('form').submit(function (event) {
+        for (var j = 0; j <@v && @k; j++) {
+            roleDetail = {
+            ParentName: $('#parentname' + j).text(),
+            ParentId:$('#parentid' + j).text(),
+            FunctionId: $('#sno' + j).text(),
+            IsActive: $('#IsActive' + j).is(':checked'),
+            Fname: $('#fname' + j).text(),
+            RoleId: $('#userrole').val()
+        };
+        roleDetails.push(roleDetail);
+        }
+
+    $.post('/RoleSetup/Manage', { data: roleDetails }, function (data) {
+        alert('successfully role asigned!');
+       event.preventDefault();
+    });
+    })
+
+    $('#userrole').change(function () {
+        $('input[type=checkbox]').prop('checked', false);
+        getAssignedSno();
+    })
+    function getAssignedSno() {
+        $.ajax({
+            url: '/RoleSetup/AssignedSno',
+            data: {
+                roleId: $('#userrole').val()
+            },
+            success: function (data) {
+                $.each(data, function (i, item) {
+                    $('input[name="fsno' + item.function_id + '"]').prop('checked', true);
+                })
+            }
+        })
+    }
+</script>

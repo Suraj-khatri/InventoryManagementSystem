@@ -1,0 +1,67 @@
+﻿@model InventoryManagementSystem.Domain.FuelRequestsMessageVM
+
+    @{
+        ViewBag.Title = "ViewRequestedDetails";
+    }
+
+
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <div class="box-title"> <i class="fa fa-arrow-right"></i>Requisition History</div>
+            <div class="box-tools pull-right">
+                <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(x => x.Id)
+            <div class="box-body tablefont">
+                <div id="tadd">
+                    <table class="table table-bordered" id="tbl_create">
+                        <thead class="thead-dark" style="height:20px">
+                            <tr>
+                                <th>Fuel Category</th>
+                                <th>Vehicle Category</th>
+                                <th>Requested Quantity</th>
+                                <th>Package Unit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.inreqList.OrderBy(x => x.Id))
+                            {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(model => item.Fuel_Category)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => item.Vehicle_Category)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => item.Requested_Quantity)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => item.Unit)
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <fieldset style="list-style: circle; list-style-type: circle; width: 98%;">
+                        <legend style="color:forestgreen;font:bold;font-size:small">Requisition Message</legend>
+                        <div class="row">
+                            <div class="col-md-4 col-xs-12">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Requested_Message, htmlAttributes: new { @class = "control-label" })
+                                    @Html.TextAreaFor(model => model.Requested_Message, new { rows = "3", cols = "130", id = "reqmessage", @readonly = "readonly" })
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+       
+            </div>
+                </div>
+        }
+    </div>

@@ -1,0 +1,122 @@
+﻿@model InventoryManagementSystem.Domain.VendorBidPriceVM
+
+@{
+    ViewBag.Title = "Assign Vendor";
+}
+
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="box-title">Vendor Assign For :-<a> @(Model.INPRODUCTs.porduct_code)</a> </div>
+        <div class="box-tools pull-right">
+            <a href="/InProduct/Index/@(Model.INPRODUCTs.INITEMVM.parent_id)" class="btn btn-default btn-sm">
+                <i class="fa fa-list"></i>
+                Back to List
+            </a>
+            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                <i class="fa fa-minus" id="minusBtn"></i> Add
+            </button>
+        </div>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.id)
+        @Html.HiddenFor(x=>x.product_id)
+        <div class="box-body formfont">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="row">
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Customers.CustomerName, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.vendor_id, Model.VendorList, new { @class = "form-control selectSearch" })
+                        @Html.ValidationMessageFor(x => x.vendor_id, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.price, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.price, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(x => x.price, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.is_active, htmlAttributes: new { @class = "control-label" })
+                        <div>
+                            @Html.RadioButtonFor(model => model.is_active, true) Yes
+                            @Html.RadioButtonFor(model => model.is_active, false) No
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="col-md-12 col-md-offset-9">
+                    <a href="/InProduct/Index/@(Model.INPRODUCTs.INITEMVM.parent_id)" class="btn btn-default"><i class="fa fa-close"></i> Cancel</a>
+                    <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="box-title"><i class="fa fa-list"></i> Assigned Vender For :-<a> @(Model.INPRODUCTs.porduct_code)</a>  </div>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body formfont">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Vendor Name</th>
+                    <th>Product Name</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            @if (Model.VendorBidPriceVMList != null)
+            {
+                <tbody id="commissionList">
+                    @{ int i = 1;}
+                    @foreach (var item in Model.VendorBidPriceVMList)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(model => item.Customers.CustomerName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.INPRODUCTs.porduct_code)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.price)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.is_active)
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Edit","VendorAssign",new{Id=item.id })" class="btn btn-xs btn-info" title="Edit"><i class="fa fa-edit"></i></a>
+                            @*<a onclick="confirm('Are you sure?') ? $('#DeleteForm_@item.id').submit() : null;" class="btn btn-xs btn-danger" title="Remove">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                            @using (Html.BeginForm("Delete", "VendorAssign", FormMethod.Post, new { id = "DeleteForm_" + item.id }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <input id="id" name="id" value="@item.id" style="display:none;" readonly="readonly" />
+                            }*@
+                        </td>
+
+                    </tr>
+                        i++;
+                    }
+                </tbody>
+            }
+        </table>
+    </div>
+</div>
+@Scripts.Render("~/bundles/jqueryval")
+

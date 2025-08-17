@@ -1,0 +1,431 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/adminLte")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="~/nepalidatepicker/nepalidatepicker.css" rel="stylesheet" />
+    <script src="~/Scripts/DateConverter.js"></script>
+    <script src="~/Scripts/AdminLTE/app.js"></script>
+    <script src="~/nepalidatepicker/minifiedVersion.js"></script>
+    <link rel="icon" href="~/Umbrella-icon.PNG" />
+</head>
+<body class="hold-transition skin-blue sidebar-mini fixed">
+    <style>
+        /*sidebar menu*/
+        .sidebar-menu > li > a {
+            padding: 7px 5px 7px 15px;
+            display: block;
+        }
+    </style>
+    <div class="wrapper">
+        <header class="main-header">
+            <!-- Logo -->
+            <a class="logo" href="/">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini" style="color: white"><b style="color: #00ff90">I</b><b style="color: #ff6a00">M</b>S</span>
+                <!-- logo for regular state and mobile devices -->
+                <span class="logo-lg" style="color: white"><b style="color: #00ff90">Inventory</b>&nbsp;<b style="color: #ff6a00">System</b></span>
+            </a>
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+                <!-- Navbar Right Menu -->
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a>
+                                <span> Welcome : @Session["FullName"].ToString() ( @Session["BranchName"], @Session["DepartmentName"] )</span>
+                            </a>
+                        </li>
+                        <li class=" dropdown notifications-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-bell">
+                                </i>
+                                <span class="label label-success" id="NotificationCount"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header" id="NotificationHead"> </li>
+                                <li>
+                                    <div>
+                                        <ul class="menu" id="NotificationBody"></ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <span><i class="fa fa-user"></i>@*&nbsp;&nbsp;@Session["UserId"].ToString().First().ToString().ToUpper()@Session["UserId"].ToString().Substring(1)*@ <i class="fa fa-caret-down"></i></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="user-header">
+                                    <a href="/Home/ChangePassword"><i class="fa fa-pencil"></i>Change Password</a>
+                                </li>
+                                <li class="user-header">
+                                    <a href="/Login/LogOut"><i class="fa fa-sign-out"></i>Log Out</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        @*@Html.Partial("_SideMenu")*@
+        @{Html.RenderAction("_SideMenu", "Shared");}
+        <div class="content-wrapper">
+            <section class="content">
+
+                @RenderBody()
+            </section>
+        </div>
+    </div>
+    <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+            <b>Version</b> 2.0
+        </div>
+        <strong>Copyright © @System.DateTime.Now.Year <a href="http://www.umbrellasolns.com/">Umbrella Solutions Pvt. Ltd</a>.</strong> All rights
+        reserved.
+    </footer>
+    @Scripts.Render("~/bundles/adminLte")
+    @RenderSection("scripts", required: false)
+    <script>
+        //$('.table').on('search.dt', function () {
+        //    var record = ''
+        //    record = $('.dataTables_filter input').val();
+        //    localStorage.setItem('record', record);
+        //});
+        $(document).ready(function () {
+            //$.ajaxSetup({
+            //    complete: function (xhr) {
+            //        console.log(xhr, 'layout');
+            //        if (xhr.responseJSON && xhr.responseJSON.redirect) {
+            //            window.location.href = xhr.responseJSON.url;
+            //        }
+            //    }
+            //});
+
+            var tree = new treefilter($("#sidebar-search-menu"), {
+                // OPTIONS
+                searcher: $("#sidebar-search"),
+                expanded: false,
+                offsetLeft: 0
+            }
+            );
+
+            $('table').not('.noDataTable').DataTable({
+                'order': [],
+                'columnDefs': [
+                    {
+                        'orderable': false, 'targets': -1
+                    }]
+            });
+
+            //$.fn.dataTableExt.sErrMode = 'throw';
+            //var data = localStorage.getItem('record');
+            //if (data != '') {
+            //    $('.table').dataTable({
+            //        "oSearch": { "sSearch": data }
+            //    });
+            //}
+
+            $('a').tooltip();
+            $('form:first *:input[type!=hidden]:not([disabled]):first').focus();
+            if ($('.validation-summary-errors > ul > li').css('display') != 'none') {
+                $('.validation-summary-errors').css('display', 'block');
+                setTimeout(function () {
+                    $('.validation-summary-errors').fadeOut("slow")
+                }, 3000);
+            }
+            if ('@TempData["Success"]' != '') {
+                $.notify({
+                    icon: '@TempData["Icon"]',
+                    title: '@Html.Raw(@TempData["Title"])',
+                    message: '@Html.Raw(@TempData["Success"])'
+                }, {
+                    type: 'success',
+                    animate: {
+                        enter: 'animated fadeInUp',
+                        exit: 'animated fadeOutRight'
+                    },
+                    placement: {
+                        from: 'bottom',
+                        align: 'right'
+                    },
+                    mouse_over: 'pause'
+                });
+            } else if ('@TempData["Fail"]' != '') {
+                $.notify({
+                    icon: '@TempData["Icon"]',
+                    title: '@Html.Raw(@TempData["Title"])',
+                    message: '@Html.Raw(@TempData["Fail"])'
+                }, {
+                    type: 'danger',
+                    animate: {
+                        enter: 'animated fadeInUp',
+                        exit: 'animated fadeOutRight'
+                    },
+                    placement: {
+                        from: 'bottom',
+                        align: 'right'
+                    },
+                    mouse_over: 'pause'
+                });
+            }
+            //$('li.user-header').on("click", "a", function (event) {
+            //    $(this).children().first().click();
+            //})
+            //Autocapitalize Name Fields//
+            $('.capitalize').keyup(function (event) {
+                var textBox = event.target;
+                var start = textBox.selectionStart;
+                var end = textBox.selectionEnd;
+                textBox.value = textBox.value.split(/\s+/).map(s => s.charAt(0).toUpperCase() + s.substring(1).toLowerCase()).join(" ");
+                textBox.setSelectionRange(start, end);
+            });
+            $('.selectSearch').select2();
+            UserNotification();
+
+            $('.nepaliDatePicker').nepaliDatePicker({
+                zoomFactor: 1.0,
+                //disabledDates: [
+                //    //adding date disable feature from scripts (in case of other than min and max)
+                //    { year: 2080, startingDate: 1, endingDate: 11, month:6  },
+                //    { year: 2080, startingDate: 27, month:6 },
+                //    { year: 2080, endingDate: 1, month:4 },
+                //],
+            });
+        })
+
+        $('input[type="date"]').addClass('nepaliDatePicker');
+
+        $('form').not('[id*=Delete],[id*=Restore],[id*=Activate],[id*=activate],[id=TicketReport],[id=detinfo],[id=adddata]').submit(function (event) {
+            return confirm('Are you sure you want to submit the information?');
+        })
+        $('a.btn-reddit').not('[id*=Delete],[id*=Restore],[id*=Activate],[id*=activate],[id=TicketReport]').click(function (event) {
+            return confirm('Are you sure?');
+        })
+        //disables the mouse scroll when inside an input field of type number (in order to stop value change on scroll)
+        $('form').on('focus', 'input[type=number]', function (e) {
+            $(this).on('mousewheel.disableScroll', function (e) {
+                e.preventDefault()
+            })
+        })
+
+        //enables the mouse scroll when outside the input field of type number
+        $('form').on('blur', 'input[type=number]', function (e) {
+            $(this).off('mousewheel.disableScroll')
+        })
+
+        //sets the  in value of all input field of type number to minus
+        $('form').on('focus', 'input[type=number]', function (e) {
+            $(this).attr('min', 0)
+        })
+        //Comma Seperator Dashboard
+        function numberWithCommas(x) {
+            if (x !== undefined) {
+            var parts = x.toString().split(".");
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                return parts.join(".");
+            }
+            return 0;
+        }
+
+        //region sidebar start
+        //script to keep treeview from collapsing
+        var url = window.location;
+
+        $('ul.sidebar-menu a').filter(function () {
+            if (url == this.href)
+                return this.href;
+            var link = url.href + "/";
+            var check = this.href + "/";
+
+            if (link.indexOf(check) != -1 && url.origin + '/' != this.href)
+                return this.href;
+        }).parent().addClass('active');
+
+        // for treeview
+        $('ul.treeview-menu a').filter(function () {
+            if (url == this.href)
+                return this.href;
+            var link = url.href + "/";
+            var check = this.href + "/";
+
+            if (link.indexOf(check) != -1 && url.origin + '/' != this.href)
+                return this.href;
+        }).parentsUntil(".sidebar-menu > .treeview-menu").addClass('active');
+
+                //region sidebar end
+        if ($('#DateFrom').val() != undefined && $('#DateTo').val() != undefined) {
+            $('#DateFrom, #DateTo').change(function () {
+                var DateFrom = $('#DateFrom').val();
+                var DateTo = $('#DateTo').val();
+                if (DateTo < DateFrom) {
+                    $('#showReport').attr('disabled', true);
+                    $('#showReport').removeClass('btn-success').addClass('btn-danger');
+                    $('#showReport').text('To Date Cannot be Less than From Date');
+
+                    $('#showReport1').attr('disabled', true);
+                    $('#showReport1').removeClass('btn-success').addClass('btn-danger');
+                    $('#showReport1').text('To Date Cannot be Less than From Date');
+
+                    $('#showReport2').attr('disabled', true);
+                    $('#showReport2').removeClass('btn-success').addClass('btn-danger');
+                    $('#showReport2').text('To Date Cannot be Less than From Date');
+
+                    $('#showReport3').attr('disabled', true);
+                    $('#showReport3').removeClass('btn-success').addClass('btn-danger');
+                    $('#showReport3').text('To Date Cannot be Less than From Date');
+
+                    $('#showReport4').attr('disabled', true);
+                    $('#showReport4').removeClass('btn-success').addClass('btn-danger');
+                    $('#showReport4').text('To Date Cannot be Less than From Date');
+
+                    $('#showReport5').attr('disabled', true);
+                    $('#showReport5').removeClass('btn-success').addClass('btn-danger');
+                    $('#showReport5').text('To Date Cannot be Less than From Date');
+
+                    $('#showReport6').attr('disabled', true);
+                    $('#showReport6').removeClass('btn-success').addClass('btn-danger');
+                    $('#showReport6').text('To Date Cannot be Less than From Date');
+
+                    $('#showReport7').attr('disabled', true);
+                    $('#showReport7').removeClass('btn-success').addClass('btn-danger');
+                    $('#showReport7').text('To Date Cannot be Less than From Date');
+
+                    $('#showRptMDSDetail').attr('disabled', true);
+                    $('#showRptMDSDetail').removeClass('btn-success').addClass('btn-danger');
+                    $('#showRptMDSDetail').text('To Date Cannot be Less than From Date');
+
+                    $('#showRptMDSSummary').attr('disabled', true);
+                    $('#showRptMDSSummary').removeClass('btn-success').addClass('btn-danger');
+                    $('#showRptMDSSummary').text('To Date Cannot be Less than From Date');
+
+                    $('#showRptMDSMasterSummary').attr('disabled', true);
+                    $('#showRptMDSMasterSummary').removeClass('btn-success').addClass('btn-danger');
+                    $('#showRptMDSMasterSummary').text('To Date Cannot be Less than From Date');
+                }
+                else {
+                    $('#showReport').removeAttr('disabled', false);
+                    $('#showReport').removeClass('btn-danger').addClass('btn-success');
+                    $('#showReport').text('Generate');
+
+                    $('#showReport1').removeAttr('disabled', false);
+                    $('#showReport1').removeClass('btn-danger').addClass('btn-success');
+                    $('#showReport1').text('Product Wise Detail Rpt');
+
+                    $('#showReport2').removeAttr('disabled', false);
+                    $('#showReport2').removeClass('btn-danger').addClass('btn-success');
+                    $('#showReport2').text('BranchWise Summary Rpt');
+
+                    $('#showReport3').removeAttr('disabled', false);
+                    $('#showReport3').removeClass('btn-danger').addClass('btn-success');
+                    $('#showReport3').text('Branch & Group Wise Summary Rpt');
+
+                    $('#showReport4').removeAttr('disabled', false);
+                    $('#showReport4').removeClass('btn-danger').addClass('btn-success');
+                    $('#showReport4').text('Branch Wise');
+
+                    $('#showReport5').removeAttr('disabled', false);
+                    $('#showReport5').removeClass('btn-danger').addClass('btn-success');
+                    $('#showReport5').text('Detail Report');
+
+                    $('#showReport6').removeAttr('disabled', false);
+                    $('#showReport6').removeClass('btn-danger').addClass('btn-success');
+                    $('#showReport6').text('Request Purchase');
+
+                    $('#showReport7').removeAttr('disabled', false);
+                    $('#showReport7').removeClass('btn-danger').addClass('btn-success');
+                    $('#showReport7').text('Direct Purchase');
+
+                    $('#showRptMDSDetail').removeAttr('disabled', false);
+                    $('#showRptMDSDetail').removeClass('btn-danger').addClass('btn-success');
+                    $('#showRptMDSDetail').text('Detail Report');
+
+                    $('#showRptMDSSummary').removeAttr('disabled', false);
+                    $('#showRptMDSSummary').removeClass('btn-danger').addClass('btn-success');
+                    $('#showRptMDSSummary').text('Summary Report');
+
+                    $('#showRptMDSMasterSummary').removeAttr('disabled', false);
+                    $('#showRptMDSMasterSummary').removeClass('btn-danger').addClass('btn-success');
+                    $('#showRptMDSMasterSummary').text('Master Summary Report');
+
+                }
+            })
+        }
+
+        function UserNotification() {
+            $.ajax({
+                method : 'POST',
+                url: '/Shared/UserNotifications',
+                success: function (data) {
+                    var len = data.length;
+                    if (len > 0) {
+                        $('#NotificationCount').text(len);
+                    }
+                    else {
+                    $('#NotificationCount').text();
+                    }
+                    $('#NotificationHead').text('You have ' + len + ' Notifications.');
+                    $('#NotificationBody').empty();
+                    console.log(data);
+                    $.each(data, function (i, record) {
+                        $('#NotificationBody').append(
+                            $('<li>')
+                                .append($('<a>').attr('href', record.URL)
+                                    .append($('<i>').attr('class', 'fa fa-database text-yellow'))
+                                    .append(record.Subject)
+                                )
+                         );
+                    });
+                    $('#NotificationBody').append(
+                            $('<li>')
+                                .append($('<a>').attr('href', '/ApprovePurchaseOrder')
+                                    .append("View All Notifications")
+                                )
+                         );
+                }
+            });
+        }
+
+        //-----disable right click and F12----------
+
+        //$(document).on({
+        //    "contextmenu": function (e) {
+        //        console.log("ctx menu button:", e.which);
+
+        //        // Stop the context menu
+        //        e.preventDefault();
+        //    },
+        //    "mousedown": function (e) {
+        //        console.log("normal mouse down:", e.which);
+        //    },
+        //    "mouseup": function (e) {
+        //        console.log("normal mouse up:", e.which);
+        //    }
+        //});
+        //$(document).keydown(function (event) {
+        //    if (event.keyCode == 123) {
+        //        return false;
+        //    }
+        //    else if (event.ctrlKey && event.shiftKey && event.keyCode == 73) {
+        //        return false;
+        //    }
+        //});
+
+        //$(document).on("contextmenu", function (e) {
+        //    e.preventDefault();
+        //});
+        //-------End-----------------
+        //window.setInterval(function () { UserNotification() }, 3000);
+    </script>
+</body>
+</html>

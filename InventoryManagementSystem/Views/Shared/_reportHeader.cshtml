@@ -1,0 +1,7 @@
+﻿@model InventoryManagementSystem.Domain.ReportHeaderVM
+
+@foreach (var item in Model.CompanyDetails)
+{
+    <h4>@(item.COMP_NAME)</h4>
+    <h5>@(item.COMP_ADDRESS)</h5>
+}

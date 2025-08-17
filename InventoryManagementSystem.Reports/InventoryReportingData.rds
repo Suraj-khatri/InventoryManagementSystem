@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RptDataSource xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Name="InventoryReportingData">
+  <ConnectionProperties>
+    <Extension>SQL</Extension>
+    <ConnectString>Data Source=DESKTOP-AACB547;Initial Catalog=ERP_LIVENew</ConnectString>
+  </ConnectionProperties>
+  <DataSourceID>99428a42-7359-488d-b089-6c9e47cd3112</DataSourceID>
+</RptDataSource>

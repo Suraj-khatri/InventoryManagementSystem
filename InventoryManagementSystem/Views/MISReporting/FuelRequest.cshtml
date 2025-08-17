@@ -1,0 +1,119 @@
+﻿@model InventoryManagementSystem.Domain.ReportingViewModel.ReportParameterVM
+@using ReportViewerForMvc;
+@{
+    ViewBag.Title = "Fuel Request Details - Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    iframe {
+        width: 100% !important;
+        border: none;
+        margin: 0px;
+        padding: 0px;
+    }
+</style>
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="box-title"><i class="fa fa-search"></i>Fuel Request Details- Report</div>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="box-body formfont">
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "TicketReport" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="row">
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        @Html.Label("Request Date From", htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.DateFrom, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.DateFrom, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        @Html.Label("Request Date To", htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.DateTo, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.DateTo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        @Html.Label("Requesting Branch", htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.BranchId, Model.BranchList, new { @class = "form-control selectSearch" })
+                        @Html.ValidationMessageFor(model => model.BranchId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.VehicleCategory, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.VehicleCategory, Model.VehicleCategoryList, new { @class = "form-control selectSearch" })
+                        @Html.ValidationMessageFor(model => model.VehicleCategory, "", new { @class = "text-danger" })
+                    </div>
+
+                </div>
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.FuelCategory, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.FuelCategory, Model.FuelCategoryList, new { @class = "form-control selectSearch" })
+                        @Html.ValidationMessageFor(model => model.FuelCategory, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        @Html.Label("Requested By", htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.UserId, Model.EmployeeList, new { @class = "form-control selectSearch" })
+                        @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label">Fuel Vendor</label>
+                        <input list="vendorcatlist" id="FuelVendor" value="@Model.FuelVendor" name="FuelVendor" class="form-control" />
+                        <datalist id="vendorcatlist">
+                            @foreach (var user in Model.FuelVendorList)
+                            {
+                                <option value=@user.Text>@user.Text</option>
+                            }
+                        </datalist>
+
+                    </div>
+                </div>
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        @Html.Label("Coupon No/Vehicle No", htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.CouponNo, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.FuelStatus, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.FuelStatus, Model.FuelStatusList, new { @class = "form-control selectSearch" })
+                        @Html.ValidationMessageFor(model => model.FuelStatus, "", new { @class = "text-danger" })
+                    </div>
+
+                </div>
+            </div>
+                <div class="box-footer">
+                    <div class="pull-right">
+                        <button type="submit" class="btn btn-success"> Generate</button>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+
+@if (ViewBag.ReportViewer != null)
+{
+    @Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer, new { scrolling = "no" })
+}
+

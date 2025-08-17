@@ -1,0 +1,55 @@
+﻿@model  InventoryManagementSystem.Domain.CompanyVM
+@{
+    ViewBag.Title = "Company Details";
+}
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="box-title"><i class="fa fa-list"></i> Company Details</div>
+        <div class="box-tools pull-right">
+            <a href="/Company/Edit/@Model.COMP_ID" class="btn btn-success btn-sm">
+                <i class="fa fa-pencil-square-o"></i>
+                Company Details
+            </a>
+            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body tablefont">
+        <table class="table table-bordered noDataTable">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Company Name</th>
+                    <th>Address</th>
+                    <th>Phone No.</th>
+                    <th>Email</th>
+                    <th>Url</th>
+                    <th>Contact Person</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => model.COMP_NAME)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.COMP_ADDRESS)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.COMP_PHONE_NO)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.COMP_EMAIL)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.COMP_URL)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.COMP_CONTACT_PERSON)
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+

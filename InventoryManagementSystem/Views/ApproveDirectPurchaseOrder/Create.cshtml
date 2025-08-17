@@ -1,0 +1,329 @@
+﻿@model InventoryManagementSystem.Domain.BillInfoVM
+@{
+    ViewBag.Title = "Approve Direct Purchase Order";
+}
+
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="box-title"> <i class="fa fa-arrow-right"></i>Approve Direct Purchase Order</div>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.pomid)
+        @Html.HiddenFor(x => x.bill_id)
+        @Html.HiddenFor(x => x.billno)
+        @Html.HiddenFor(x => x.IsVatablePO)
+        @Html.HiddenFor(x => x.branch_id)
+
+        <div class="box-body tablefont">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @if (Model.IsVatablePO == false)
+            {
+                <h4 style="margin-bottom:10px; color:chocolate"><i class="fa fa-info-circle"></i> Direct Purchase Order Information <span style="color:red !important">(non-vatable PO)</span></h4>
+            }
+            else
+            {
+                <h4 style="margin-bottom:10px; color:chocolate"><i class="fa fa-info-circle"></i> Direct Purchase Order Information </h4>
+            }
+            <fieldset style="list-style: circle; list-style-type: circle; width: 98%;">
+                <legend style="color:forestgreen;font-size:small;font:bold"> Direct P.O Information:</legend>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Bill No: </label>
+                            @Html.DisplayFor(model => model.billno)
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Bill Date: </label>
+                            @Html.DisplayFor(model => model.bill_date)
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Vendor Name: </label>
+                            @Html.DisplayFor(model => model.VendorName)
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Forwarded To: </label>
+                            @Html.DisplayFor(model => model.forwardedToName)
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Forwarded By: </label>
+                            @Html.DisplayFor(model => model.orderby)
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label">Order Status: </label>
+                                @Html.DisplayFor(model => model.Status)
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </fieldset>
+            <fieldset style="list-style: circle; list-style-type: circle; width: 98%;">
+                <legend style="color:forestgreen;font:bold;font-size:small"> Direct P.O Product Information:</legend>
+                <div>
+                    <table class="table table-bordered noDataTable">
+                        <thead class="thead-dark" style="height:20px">
+                            <tr>
+                                <th>Prod Code</th>
+                                <th>Product Name</th>
+                                <th>Requested Qty</th>
+                                <th style="width:5px">Approved Qty</th>
+                                <th>Rate</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.poList.OrderBy(x => x.productname.Trim()))
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(model => item.product_code)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(model => item.productname)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(model => item.qty)
+                                    </td>
+                                    <td id="appQty">
+                                        @if (item.serialstatus)
+                                        {
+                                            <input type="number" name="approvedqty" value="@item.qty" size="5" readonly />
+
+                                        }
+                                        else
+                                        {
+                                            <input type="number" name="approvedqty" value="@item.qty" size="5" />
+                                        }
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(model => item.rate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(model => item.amount)
+                                    </td>
+
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td> Sub Total <br /> 13% VAT <br /> Net Total	 </td>
+                                <td><span id="SubTotal">@Html.DisplayFor(model => model.SubTotal)</span>  <br /><span id="TotalVAT">@Html.DisplayFor(model => model.vat_amt)</span>  <br /><span id="TotalBillAmount"> @Html.DisplayFor(model => model.bill_amount)</span></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </fieldset>
+            <br />
+
+            <div class="row formfont">
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.bill_notes, htmlAttributes: new { @class = "control-label readonly" })
+                        @Html.TextAreaFor(model => model.bill_notes, new { rows = "3", cols = "150", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(x => x.bill_notes, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="row formfont">
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Approved_Message, htmlAttributes: new { @class = "control-label required" })
+                        @Html.TextAreaFor(model => model.Approved_Message, new { rows = "3", cols = "150", @value = "" })
+                        @Html.ValidationMessageFor(x => x.Approved_Message, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="box-footer">
+                <div class="col-md-12 col-md-offset-8">
+                    <a id="appbtn" class="btn btn-success"><i class="fa fa-archive"></i> Approve</a>
+                    <a id="rejbtn" class="btn btn-danger"><i class="fa fa-ban"></i> Reject</a>
+                    <a href="/ApproveDirectPurchaseOrder/Index" class="btn btn-default"><i class="fa fa-backward"></i> Back</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(document).on("click", '.bb', function (e) {
+            var rejectConfirmMessage = confirm("Are you sure you want to Reject?");
+        });
+        $('input[name="approvedqty"]').on('input', function () {
+            updateTotals();
+        });
+
+        function updateTotals() {
+            var subtotal = 0;
+            $('input[name="approvedqty"]').each(function () {
+                var qtyInput = $(this);
+                var orderedQty = parseInt(qtyInput.closest('tr').find('td:eq(2)').text());
+                var qty = parseInt(qtyInput.val());
+                if (qty > orderedQty) {
+                    alert('Approved quantity cannot exceed ordered quantity.');
+                    qtyInput.val(orderedQty);
+                    qty = orderedQty;
+                }
+                var rate = parseFloat(qtyInput.closest('tr').find('td:eq(4)').text());
+                var amount = qty * rate;
+                qtyInput.closest('tr').find('td:eq(5)').text(amount.toFixed(2));
+                subtotal += amount;
+            });
+
+            var vatPercentage = 0.13; // Assuming VAT is 13%
+            var isVATablePO = $('#IsVatablePO').val();
+            var vatAmount = 0;
+            if (isVATablePO == "True") {
+                vatAmount = subtotal * vatPercentage;
+            }
+            var totalAmount = subtotal + vatAmount;
+
+            $('#SubTotal').text(subtotal.toFixed(2));
+            $('#TotalVAT').text(vatAmount.toFixed(2));
+            $('#TotalBillAmount').text(totalAmount.toFixed(2));
+        }
+
+        $('#appbtn').click(function () {
+            var r = confirm("Are you sure?");
+            if (r) {
+                var Approved_Message = $('#Approved_Message').val().trim();
+                if (!Approved_Message) {
+                    alert("Approve Message is required.");
+                    $('#Approved_Message').focus();
+                    return false;
+                }
+                var data = {};
+                var polist = [];
+                $("table tr:not(:first)").each(function () {
+                    var tdlist = $(this).find("td");
+                    var pItem = {
+                        product_code: $(tdlist[0]).text(),
+                        productname: $(tdlist[1]).text(),
+                        qty: $(tdlist[2]).text(),
+                        Received_Qty: $(this).closest('tr').find("#appQty :input[type='number']").val(),
+                        rate: $(tdlist[4]).text(),
+                        amount: $(tdlist[5]).text()
+                    };
+                    polist.push(pItem);
+                });
+                data.pomid = $('#pomid').val();
+                data.billno = $('#billno').val();
+                data.bill_id = $('#bill_id').val();
+                data.bill_date = $('#bill_date').val();
+                data.branch_id = $('#branch_id').val();
+                data.Approved_Message = $('#Approved_Message').val();
+                data.vat_amt = $('#TotalVAT').text();
+                data.bill_amount = $('#TotalBillAmount').text();
+                data.polist = polist;
+
+                $.ajax({
+                    url: '/ApproveDirectPurchaseOrder/Create',
+                    type: 'POST',
+                    contentType: "application/json",
+                    data: JSON.stringify(data),
+                    success: function (res) {
+                        if (res.success) {
+                            showMessage(res.mes, "Success", 'success', function () {
+                                window.location.href = '/ApproveDirectPurchaseOrder/Index';
+                            });
+                        } else {
+                            showMessage(res.mes, "Error", 'error');
+                        }
+                    },
+                    error: function (err) {
+                        alert("An error occurred. Please try again later.");
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+
+
+        $('#rejbtn').click(function () {
+               var rejectConfirmMessage = confirm("Are you sure you want to Reject?");
+            if (rejectConfirmMessage) {
+              var  Approved_Message = $('#Approved_Message').val().trim();
+                if (!Approved_Message) {
+                    alert("Reject Message is required.");
+                    $('#Approved_Message').focus();
+                    return false;
+                }
+
+                var data = {
+                    id: '@Model.bill_id',
+                    approved_Message: Approved_Message
+                };
+
+                $.ajax({
+                    url: '/ApproveDirectPurchaseOrder/Update',
+                    type: 'POST',
+                    contentType: "application/json",
+                    data: JSON.stringify(data),
+                    success: function (res) {
+                        if (res.success) {
+                            showMessage(res.message, "Success", 'success', function () {
+                                window.location.href = '/ApproveDirectPurchaseOrder/Index';
+                            });
+                        } else {
+                            showMessage(res.message, "Error", 'error');
+                        }
+                    },
+                    error: function (err) {
+                        alert("An error occurred. Please try again later.");
+                    }
+                });
+            } else {
+                return false;
+            }
+        });
+
+
+        function showMessage(message, title, icon, callback) {
+            swal({
+                title: title,
+                text: message,
+                icon: icon,
+                button: 'OK'
+            }).then(function () {
+                if (typeof callback === 'function') {
+                    callback();
+                }
+            });
+        }
+    });
+
+
+
+</script>

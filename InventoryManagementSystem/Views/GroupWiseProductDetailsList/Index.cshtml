@@ -1,0 +1,82 @@
+﻿@model  InventoryManagementSystem.Domain.INBranchVM
+@{
+    ViewBag.Title = "Product Details Group Wise";
+}
+
+@using (Html.BeginForm("Index", "GroupWiseProductDetailsList", FormMethod.Post, new { id = "detinfo" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <div class="box-title">
+                <i class="fa fa-list"></i> Product Details Group Wise
+            </div>
+        </div>
+        <div class="box-body formfont">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="label-control">Product Group Name</label>
+                        @Html.DropDownListFor(model => model.ProductGroupId, Model.ProductGroupList, new { @class = "form-control selectSearch" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="label-control">Branch Name</label>
+                        @Html.DropDownListFor(model => model.BRANCH_ID, Model.BranchList, new { @class = "form-control selectSearch" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <br />
+                        <button type="submit" class="btn btn-success pull-right">Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-body tablefont">
+            <table class="table table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>S.N.</th>
+                        <th>Branch Name</th>
+                        <th>Product Group Name</th>
+                        <th>Product Code</th>
+                        <th>Product Name</th>
+                        <th>Is Active</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ int i = 1;}
+                    @foreach (var item in Model.INBranchVMList)
+                    {
+                        <tr>
+                            <td style="width:3%">
+                                @i
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.BRANCH_NAME)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.ProductGroupName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.PRODUCT_ID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.ProductName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.IS_ACTIVE)
+                            </td>
+                        </tr>
+                        i++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+

@@ -1,0 +1,438 @@
+﻿@model InventoryManagementSystem.Domain.EmployeeVM
+@{
+    ViewBag.Title = "Manage Employee Profile";
+}
+
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="box-title">Manage Employee Profile</div>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.EMPLOYEE_ID)
+
+        <div class="box-body formfont">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <p>Please enter valid data! <a style="color:red">(* Required fields)</a></p>
+            <fieldset style="list-style: circle; list-style-type: circle; width: 98%;">
+                <legend style="color:orangered;font-size:small;font:bold"> Personal Information </legend>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label required">Saluation </label>
+                            @Html.DropDownListFor(model => model.SALUTATION, Model.SalutationList, new { @class = "form-control selectSearch" })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label required">Employee Code </label>
+                            @Html.EditorFor(model => model.EMP_CODE, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(x => x.EMP_CODE, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label required">Gender </label>
+                            @Html.DropDownListFor(model => model.GENDER, Model.GenderList, new { @class = "form-control selectSearch" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label required">First Name </label>
+                            @Html.EditorFor(model => model.FIRST_NAME, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(x => x.FIRST_NAME, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Middle Name </label>
+                            @Html.EditorFor(model => model.MIDDLE_NAME, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label required">Last Name </label>
+                            @Html.EditorFor(model => model.LAST_NAME, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(x => x.LAST_NAME, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label required">Date Of Birth </label>
+                            @Html.EditorFor(model => model.BIRTH_DATE, new { htmlAttributes = new { @class = "form-control", @id = "dob" } })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Marital Status </label>
+                            @Html.DropDownListFor(model => model.MERITAL_STATUS, Model.MaritalStatusList, new { @class = "form-control selectSearch" })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label required">Branch Name </label>
+                            @Html.DropDownListFor(model => model.BRANCH_ID, Model.BranchList, new { @class = "form-control selectSearch", @id = "branchname" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label required">Department </label>
+                            @Html.DropDownListFor(model => model.DEPARTMENT_ID, Model.DepartmentList, new { @class = "form-control selectSearch", @id = "departname", @required = "required" })
+                            @Html.ValidationMessageFor(x => x.DEPARTMENT_ID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Personal PAN No. </label>
+                            @Html.EditorFor(model => model.PAN_NUMBER, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label required">Position </label>
+                            @Html.DropDownListFor(model => model.POSITION_ID, Model.PositionList, new { @class = "form-control selectSearch" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Functional Title </label>
+                            @Html.DropDownListFor(model => model.FUNCTIONAL_TITLE, Model.FunctionalTitleList, new { @class = "form-control selectSearch" })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Salary Title </label>
+                            @Html.DropDownListFor(model => model.Salary_Title, Model.SalaryTitleList, new { @class = "form-control selectSearch" })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Date of Appointment </label>
+                            @Html.EditorFor(model => model.APPOINTMENT_DATE, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Date of Joining </label>
+                            @Html.EditorFor(model => model.JOINED_DATE, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Gratuity Start Date</label>
+                            @Html.EditorFor(model => model.GRATUITY_EFFECTIVE_DATE, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Attendance Card Number</label>
+                            @Html.EditorFor(model => model.ATT_CARD_ID, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label required">Employee Status </label>
+                            @Html.DropDownListFor(model => model.EMP_STATUS, Model.EmployeeStatusList, new { @class = "form-control selectSearch" })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Blood Group </label>
+                            @Html.DropDownListFor(model => model.BLOOD_GROUP, Model.BloodGroupList, new { @class = "form-control selectSearch" })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Employee Type </label>
+                            @Html.DropDownListFor(model => model.EMP_TYPE, Model.EmployeeTypeList, new { @class = "form-control selectSearch", @id = "emptype" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-xs-12 hidden" id="fromdate">
+                        <div class="form-group">
+                            <label class="control-label">From Date</label>
+                            @Html.EditorFor(model => model.C_START_DATE, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-xs-12 hidden" id="todate">
+                        <div class="form-group">
+                            <label class="control-label">To Date</label>
+                            @Html.EditorFor(model => model.C_END_DATE, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-xs-12 show" id="perdate">
+                        <div class="form-group">
+                            <label class="control-label">Permanent Date</label>
+                            @Html.EditorFor(model => model.PERMANENT_DATE, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Grade Year</label>
+                            @Html.EditorFor(model => model.GRADE, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    @*<div class="col-md-4 col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label">Last Promoted</label>
+                                @Html.EditorFor(model => model.LASTPROMOTED, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label">Last Transfer</label>
+                                @Html.EditorFor(model => model., new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>*@
+                </div>
+            </fieldset>
+            <fieldset style="list-style: circle; list-style-type: circle; width: 98%;">
+                <legend style="color:orangered;font-size:small;font:bold">  Permanent Address </legend>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Country </label>
+                            @Html.DropDownListFor(model => model.PER_COUNTRY, Model.CountryList, new { @class = "form-control selectSearch" })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Province </label>
+                            @Html.DropDownListFor(model => model.PER_PROVINCE, Model.ProvinceList, new { @class = "form-control selectSearch", @id = "pzonename" })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">District </label>
+                            @Html.DropDownListFor(model => model.PER_DISTRICT, Model.DistrictList, new { @class = "form-control selectSearch", @id = "pdistrictname" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Municipality/VDC </label>
+                            @Html.EditorFor(model => model.PER_MUNICIPALITY_VDC, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Ward No </label>
+                            @Html.EditorFor(model => model.PER_WARD_NO, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">House No </label>
+                            @Html.EditorFor(model => model.PER_HOUSE_NO, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Street Name </label>
+                            @Html.EditorFor(model => model.PER_STREET_NAME, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset style="list-style: circle; list-style-type: circle; width: 98%;">
+                <legend style="color:orangered;font-size:small;font:bold">  Temporary Address </legend>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Country </label>
+                            @Html.DropDownListFor(model => model.TEMP_COUNTRY, Model.CountryList, new { @class = "form-control selectSearch" })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Province </label>
+                            @Html.DropDownListFor(model => model.TEMP_PROVINCE, Model.ProvinceList, new { @class = "form-control selectSearch", @id = "tzonename" })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">District </label>
+                            @Html.DropDownListFor(model => model.TEMP_DISTRICT, Model.DistrictList, new { @class = "form-control selectSearch", @id = "tdistrictname" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Municipality/VDC </label>
+                            @Html.EditorFor(model => model.TEMP_MUNICIPALITY_VDC, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Ward No </label>
+                            @Html.EditorFor(model => model.TEMP_WARD_NO, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">House No </label>
+                            @Html.EditorFor(model => model.TEMP_HOUSE_NO, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Street Name </label>
+                            @Html.EditorFor(model => model.TEMP_STREET_NAME, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset style="list-style: circle; list-style-type: circle; width: 98%;">
+                <legend style="color:orangered;font-size:small;font:bold">  Contact Information </legend>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Phone (Office) </label>
+                            @Html.EditorFor(model => model.OFFICE_PHONE, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Phone (Res.) </label>
+                            @Html.EditorFor(model => model.HOME_PHONE, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Mobile (Office) </label>
+                            @Html.EditorFor(model => model.OFFICE_MOBILE, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Mobile (Personal) </label>
+                            @Html.EditorFor(model => model.PERSONAL_MOBILE, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(x => x.PERSONAL_MOBILE, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Fax (Office) </label>
+                            @Html.EditorFor(model => model.OFFICE_FAX, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Fax (Personal) </label>
+                            @Html.EditorFor(model => model.PERSONAL_FAX, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Extension NO </label>
+                            @Html.EditorFor(model => model.EXTENSION_NUMBER, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label required">Email (Office) </label>
+                            @Html.EditorFor(model => model.OFFICIAL_EMAIL, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(x => x.OFFICIAL_EMAIL, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Email (Personal) </label>
+                            @Html.EditorFor(model => model.PERSONAL_EMAIL, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset style="list-style: circle; list-style-type: circle; width: 98%;">
+                <legend style="color:orangered;font-size:small;font:bold">  Emergency Contact Information </legend>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Conatct Person Name </label>
+                            @Html.EditorFor(model => model.EM_NAME, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Address </label>
+                            @Html.EditorFor(model => model.EM_ADDRESS, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Relationship </label>
+                            @Html.DropDownListFor(model => model.EM_RELATIONSHIP, Model.RelationshipList, new { @class = "form-control selectSearch" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Contact Number-I </label>
+                            @Html.EditorFor(model => model.EM_CONTACTNO1, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Contact Number-II </label>
+                            @Html.EditorFor(model => model.EM_CONTACTNO2, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Contact Number-III </label>
+                            @Html.EditorFor(model => model.EM_CONTACTNO3, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Email </label>
+                            @Html.EditorFor(model => model.EM_EMAIL, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="box-footer">
+                <div class="col-md-12 col-md-offset-9">
+                    <a href="/EmployeeInformation/Index" class="btn btn-default"><i class="fa fa-close"></i> Cancel</a>
+                    <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<script>
+    var obj;
+    $(document).ready(function () {
+         obj= @Html.Raw(Json.Encode(@Model));
+    })
+</script>
+<script src="~/Scripts/Areas/EmployeeInformation/Create.js"></script>

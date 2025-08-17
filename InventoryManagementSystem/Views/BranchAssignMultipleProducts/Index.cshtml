@@ -1,0 +1,176 @@
+﻿@model InventoryManagementSystem.Domain.INBranchVM
+@{
+    ViewBag.Title = "Product Assignment With Branch";
+}
+<style>
+    th {
+        background: #439842;
+        position: sticky;
+        top: 0;  /*Don't forget this, required for the stickiness*/ 
+        box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+    }
+</style>
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="box-title">Product Assignment With Branch</div>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "TicketReport" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.ID)
+        <div class="box-body formfont">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="row">
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label">Product Group </label>
+                        @Html.DropDownListFor(model => model.ProdGrpId, Model.ProductGroupList, new { @class = "form-control selectSearch" })
+                    </div>
+                </div>
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Branches.BRANCH_NAME, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.BRANCH_ID, Model.BranchList, new { @class = "form-control selectSearch" })
+                        @Html.ValidationMessageFor(x => x.BRANCH_ID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        <br />
+                        <button type="submit" class="btn btn-success"><i class="fa fa-search"></i> Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tablefont" style="overflow:auto; height:430px">
+            <table class="table table-bordered noDataTable">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>S.N</th>
+                        <th>Branch Name</th>
+                        <th class="hidden">Product Id</th>
+                        <th>Product Name</th>
+                        <th><input type="checkbox" id="masterCheck" /></th>
+                        <th style="width:3%">Reorder Level</th>
+                        <th style="width:3%">Re-Order Qty</th>
+                        <th style="width:3%">Max Holding Qty</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ int i = 1;}
+                    @foreach (var item in Model.INItemVMList.Where(x => x.Is_Active == true).OrderBy(x => x.item_name.Trim()))
+                    {
+                    <tr>
+                        <td>
+                            @i
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => model.BRANCH_NAME)
+                        </td>
+                        <td class="hidden">
+                            @Html.DisplayFor(model => item.productid)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.item_name)
+                        </td>
+                        <td>
+                            <input type="checkbox" name="row-check" />
+                        </td>
+                        <td id="reorderlevel">
+                            <input type="number" name="reorderlevel" value="0" />
+                        </td>
+                        <td id="reorderqty">
+                            <input type="number" name="reorderqty" value="0" />
+                        </td>
+                        <td id="maxholdingqty">
+                            <input type="number" name="maxholdingqty" value="0" />
+                        </td>
+                    </tr>
+                        i++;
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="box-footer">
+            <div class="col-md-3 pull-right">
+                @*<button type="button" id="savemultipleproduct" class="btn btn-success"><i class="fa fa-save"></i> Save</button>*@
+                <button type="button" data-loading-text="Saving..Please Wait.." id="savemultipleproduct" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
+                <a href="/BranchAssignMultipleProducts/Index" class="btn btn-default"><i class="fa fa-close"></i> Cancel</a>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    $(function () {
+        $("#masterCheck").on("click", function () {
+            if ($("input:checkbox").prop("checked")) {
+                $("input:checkbox[name='row-check']").prop("checked", true);
+            } else {
+                $("input:checkbox[name='row-check']").prop("checked", false);
+            }
+        });
+
+        $("input:checkbox[name='row-check']").on("change", function () {
+            var total_check_boxes = $("input:checkbox[name='row-check']").length;
+            var total_checked_boxes = $("input:checkbox[name='row-check']:checked").length;
+
+            if (total_check_boxes === total_checked_boxes) {
+                $("#masterCheck").prop("checked", true);
+            }
+            else {
+                $("#masterCheck").prop("checked", false);
+            }
+        });
+    });
+
+    $("#savemultipleproduct").click(function (e) {
+        var $btn = $(this);
+        $btn.button('loading');
+        var inbranch = {};
+        var INItemVMList = [];
+        $("table tr:not(:first)").each(function () {
+            var tdlist = $(this).find("td");
+            var Item = {
+                productid: $(tdlist[2]).text(),
+                IsRowCheck: $(tdlist[4]).find("input:checkbox").is(':checked'),
+                REORDER_LEVEL: $(this).closest('tr').find("#reorderlevel :input[type='number']").val(),
+                REORDER_QTY: $(this).closest('tr').find("#reorderqty :input[type='number']").val(),
+                MAX_HOLDING_QTY: $(this).closest('tr').find("#maxholdingqty :input[type='number']").val(),
+            };
+            INItemVMList.push(Item);
+        })
+        inbranch.BRANCH_ID = $('#BRANCH_ID :selected').val();
+        inbranch.ProductGroupId = $('#ProdGrpId :selected').val();
+        inbranch.INItemVMList = INItemVMList;
+
+        $.ajax({
+            //async: true,
+            url: "/BranchAssignMultipleProducts/AssignProduct",
+            type: "POST",
+            //datatype: 'JSON',
+            contentType: "application/json",
+            data: JSON.stringify(inbranch),
+            success: function (data) {
+                if (data.success == true) {
+                    $btn.button('reset');
+                    alert(data.mes);
+                    window.location.replace("/BranchWiseProductDetails/Index", true)
+                }
+                else {
+                     $btn.button('reset');
+                    alert(data.err);
+                }
+            },
+            error: function (err) {
+                $btn.button('reset');
+                alert("error occured!!");
+            }
+        });
+    });
+</script>

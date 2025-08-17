@@ -1,0 +1,82 @@
+﻿@model  IEnumerable<InventoryManagementSystem.Domain.PurchaseOrderMessageVM>
+@{
+    ViewBag.Title = "Received Order History";
+}
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="box-title"><i class="fa fa-list"></i> Received Order History </div>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body tablefont">
+        <table class="table table-bordered" style="overflow:auto">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Order <br /> No</th>
+                    <th>Order <br /> Date</th>
+                    <th>Vendor <br /> Name</th>
+                    <th>Requested <br /> By</th>
+                    <th>Requested <br /> Date</th>
+                    <th>Approve <br /> By</th>
+                    <th>Approve <br /> Date</th>
+                    <th>Received <br /> By</th>
+                    <th>Received <br /> Date</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => item.order_no)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.order_date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.vendorname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.orderby)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.created_date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.approvername)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.approved_date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.receivername)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.received_date)
+                    </td>
+                    @*<td>
+                        <a href="@Url.Action("Create","ReceiveApproveOrder",new { id=item.id})" class="btn btn-xs btn-info" title="View Received"><i>View Received</i></a>
+                    </td>*@
+                    <td>
+                        <button type="button" onclick="PrintReceived(@item.id)" class="btn btn-xs btn-info" title="Print Received"><i>Print Received</i></button>
+                    </td>
+                    @*<td>
+                        <a href="@Url.Action("Create","ApprovePurchaseOrder",new { id=item.id})" class="btn btn-xs btn-info" title="Print Received"><i>Print Received</i></a>
+                    </td>*@
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function PrintReceived(Id) {
+        window.open('/InvPurchaseReport/ReceivedOrderHistoryPrintReceived/'+Id, '_blank');
+    }
+</script>
+

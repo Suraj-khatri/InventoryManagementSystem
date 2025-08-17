@@ -1,0 +1,133 @@
+﻿@model InventoryManagementSystem.Domain.FixedAssetsViewModel.AssetNumberSequenceVM
+@{
+    ViewBag.Title = " Purchase Number Sequence Details";
+}
+
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="box-title"> <i class="fa fa-arrow-right"></i>Purchase Number Sequence Details</div>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.ID)
+        <div class="box-body formfont">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <h4 style="margin-bottom:10px; color:chocolate"><i class="fa fa-info-circle"></i> Number Sequence Details Entry</h4>
+            <fieldset style="list-style: circle; list-style-type: circle; width: 70%;">
+                <legend style="color:darkgreen;font-size:small;font:bold">General</legend>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Company Short Code: </label>
+                            @Html.CheckBoxFor(model => model.IsCompShortCode)
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Use Separator: </label>
+                            @Html.CheckBoxFor(model => model.IsCompSep)
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Separator: </label>
+                            @Html.DropDownListFor(model => model.CompSeparator, Model.SeparatorList, new { @class = "form-control selectSearch" })
+                        </div>
+                    </div>
+                </div>
+                    <div class="row">
+                        <div class="col-md-4 col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label">Branch Short Code: </label>
+                                @Html.CheckBoxFor(model => model.IsBranchCode)
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label">Use Separator: </label>
+                                @Html.CheckBoxFor(model => model.IsBranchSep)
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label">Separator: </label>
+                                @Html.DropDownListFor(model => model.BranchSeparator, Model.SeparatorList, new { @class = "form-control selectSearch" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label">Asset Short Code: </label>
+                                @Html.CheckBoxFor(model => model.IsAssetCode)
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label">Use Separator: </label>
+                                @Html.CheckBoxFor(model => model.IsAssetCodeSep)
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label">Separator: </label>
+                                @Html.DropDownListFor(model => model.AssetSeparator, Model.SeparatorList, new { @class = "form-control selectSearch" })
+                            </div>
+                        </div>
+                    </div>
+            </fieldset>
+            <fieldset style="list-style: circle; list-style-type: circle; width: 70%;">
+                <legend style="color:darkgreen;font-size:small;font:bold">Sequence</legend>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Starting Number : </label>
+                            @Html.EditorFor(model => model.NumSequence, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Use Separator: </label>
+                            @Html.CheckBoxFor(model => model.IsCompSep)
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Separator: </label>
+                            @Html.DropDownListFor(model => model.CompSeparator, Model.SeparatorList, new { @class = "form-control selectSearch" })
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset style="list-style: circle; list-style-type: circle; width: 70%;">
+                <legend style="color:darkgreen;font-size:small;font:bold">Date</legend>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Date Code: </label>
+                            @Html.CheckBoxFor(model => model.IsCompShortCode)
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Date Format: </label>
+                            @Html.DropDownListFor(model => model.SeqDateFormat, Model.DateFormatList, new { @class = "form-control selectSearch" })
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="box-footer" style="width:68%">
+                <div class="col-md-12 col-md-offset-11">
+                    <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+

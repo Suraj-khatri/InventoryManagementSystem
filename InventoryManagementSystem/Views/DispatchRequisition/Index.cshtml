@@ -1,0 +1,140 @@
+﻿@model  IEnumerable<InventoryManagementSystem.Domain.InRequisitionMessageVM>
+@{
+    ViewBag.Title = "Dispatch Requisition";
+}
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="box-title"><i class="fa fa-list"></i> Dispatch Requisition </div>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body tablefont" style="overflow:auto">
+        <table class="table table-bordered noDataTable">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Req. No</th>
+                    @*<th>Requested <br />Date</th>*@
+                    <th>Requested <br /> By</th>
+                    <th>Approved <br />Date</th>
+                    <th>Approved <br /> By</th>
+                    <th>Requesting <br /> Branch</th>
+                    <th>Forwarded <br /> Branch</th>
+                    <th>Requesting <br /> Department</th>
+                    <th>Dispatch</th>
+                    <th>Is <br /> Schedule</th>
+                    <th>Priority</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => item.Req_no)
+                    </td>
+                    @*<td>
+                        @Html.DisplayFor(model => item.Requ_date)
+                    </td>*@
+                    <td>
+                        @Html.DisplayFor(model => item.RequestedBy)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.Approved_Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.ApprovedBy)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.RequestingBranch)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.ForwardedBranch)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.RequestingDepartment)
+                    </td>
+                    <td>
+                        <a href="@Url.Action("ViewApproved","DispatchRequisition",new { id=item.id})" class="btn btn-xs btn-info" title="View"><i>View</i></a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.IS_SCHEDULE)
+                    </td>
+                    <td>
+                        @if (item.priority == "N")
+                        {
+                            @Html.Raw("Normal");
+                        }
+                        else if (item.priority == "H")
+                        {
+                            @Html.Raw("High");
+                        }
+                        else if (item.priority == "L")
+                        {
+                            @Html.Raw("Low");
+                        }
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    function PrintReceived(Id) {
+        window.open('/InvPurchaseReport/ReceivedOrderHistoryPrintReceived/' + Id, '_blank');
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Set up event listener for search event
+        $('.table').on('search.dt', function () {
+            var record = $('.dataTables_filter input').val();
+            localStorage.setItem('record', record);
+        });
+
+        // Retrieve stored search value and apply DataTable
+        var data = localStorage.getItem('record');
+        if (data != '') {
+            $('.table').dataTable({
+                "oSearch": { "sSearch": data },
+                "iDisplayLength": 50 // Set default page length to 50
+                // Add other DataTable options here
+            });
+        } else {
+            // Initialize DataTable without search value if localStorage is empty
+            $('.table').dataTable({
+                "iDisplayLength": 50 // Set default page length to 50
+                // Add other DataTable options here
+            });
+        }
+    });
+
+    //$('.table').on('search.dt', function () {
+    //    var record = ''
+    //    record = $('.dataTables_filter input').val();
+    //    localStorage.setItem('record', record);
+       
+    //});
+
+    //$(document).ready(function () {
+    //    $.fn.dataTableExt.sErrMode = 'throw';
+    //    var data = localStorage.getItem('record');
+    //    if (data != '') {
+    //        $('.table').dataTable({
+    //            "oSearch": { "sSearch": data }
+    //        //    "iDisplayLength": 50
+    //        });
+    //    }
+    //    //$('.table').DataTable({
+    //    //    "order": [[2, 'desc']],
+    //    //    "pageLength": 50
+    //    //});
+    //});
+   
+       
+</script>

@@ -1,0 +1,73 @@
+﻿@model  IEnumerable<InventoryManagementSystem.Domain.FuelRequestsMessageVM>
+@{
+    ViewBag.Title = "Approve Fuel Recommendation";
+}
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="box-title"><i class="fa fa-list"></i> Approve Fuel Recommendation </div>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body tablefont">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Fuel Request No.</th>
+                    <th>Req. Date</th>
+                    <th>Requested By</th>
+                    <th>Requesting Branch</th>
+                    <th>Recommended By</th>
+                    <th>Recommended Date</th>
+                    <th>Priority</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => item.FuelRequestNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.Requested_Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.RequestedBy)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.BranchName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.RecommendedBy)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.Recommended_Date)
+                    </td>
+                    <td>
+                        @if (item.Priority == "N")
+                        {
+                            @Html.Raw("Normal");
+                        }
+                        else if (item.Priority == "H")
+                        {
+                            @Html.Raw("High");
+                        }
+                        else if (item.Priority == "L")
+                        {
+                            @Html.Raw("Low");
+                        }
+                    </td>
+                    <td>
+                        <a href="@Url.Action("ViewRecommended","FuelApprove",new { id=item.Id})" class="btn btn-xs btn-info" title="View"><i>Approve</i></a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

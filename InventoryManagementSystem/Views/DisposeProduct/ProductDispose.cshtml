@@ -1,0 +1,77 @@
+﻿@model InventoryManagementSystem.Domain.InDisposeMessageVM
+@{
+    ViewBag.Title = "Product Disposal Details";
+}
+
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="box-title"> <i class="fa fa-arrow-right"></i>Product Disposal Details</div>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.Id)
+        <div class="box-body tablefont">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <h4 style="margin-bottom:10px; color:chocolate"><i class="fa fa-info-circle"></i> Product Disposal Details</h4>
+            <div id="tadd">
+                <table class="table table-bordered noDataTable" id="tbl_approvedispose">
+                    <thead class="thead-dark" style="height:20px">
+                        <tr>
+                            <th class="hidden">Product Id</th>
+                            <th>Product Name</th>
+                            <th>Package Unit</th>
+                            <th>Dispose Qty</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.disposedetailsList.OrderBy(x=>x.ProductName.Trim()))
+                        {
+                        <tr>
+                            <td class="hidden">
+                                @Html.DisplayFor(model => item.ProductId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.ProductName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.Unit)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.DisposeQty)
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <fieldset style="list-style: circle; list-style-type: circle; width: 98%;">
+                <legend style="color:forestgreen;font:bold;font-size:small">Requisition Information</legend>
+                <div class="hidden">
+                    @Html.TextBoxFor(model => model.Id, new { id = "disposemesid" })
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            @Html.Label("Disposal Reason", htmlAttributes: new { @class = "control-label" })
+                            @Html.TextAreaFor(model => model.DisposeReason, new { rows = "3", cols = "120", id = "disposemessage",@readonly="readonly" })
+                            @Html.ValidationMessageFor(x => x.DisposeReason, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="box-footer">
+                <div class="col-md-12 col-md-offset-9">
+                    <button type="button" id="saveproductdispose" class="btn btn-success"><i class="fa fa-save"></i> Dispose</button>
+                    <a href="/DisposeProduct/ProducteDisposeIndex" class="btn btn-default"><i class="fa fa-close"></i> Cancel</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<script src="~/Scripts/Areas/DisposeProduct/ProductDispose.js"></script>

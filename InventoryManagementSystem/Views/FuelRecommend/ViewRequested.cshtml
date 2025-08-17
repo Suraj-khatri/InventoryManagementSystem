@@ -1,0 +1,307 @@
+﻿@model InventoryManagementSystem.Domain.FuelRequestsMessageVM
+@{
+    ViewBag.Title = "Recommend Fuel Requisition";
+}
+<style>
+
+    .select2-search__field {
+        height: 100% !important;
+        width: 100% !important;
+    }
+
+    input:focus {
+        outline: 1px solid #1670b5;
+    }
+
+    .form-control, .select2-selection, textarea {
+        border-radius: 4px !important;
+        box-shadow: 2px 2px 2px grey;
+        border-color: #d2d6de;
+    }
+
+    .select2-container {
+        border-radius: 4px;
+        max-width: 100%;
+    }
+
+    .button {
+        height: 30px;
+        width: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-inline: 10px;
+    }
+
+    textarea {
+        width: 100%;
+    }
+
+    .box-footer {
+        width: 100%;
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        gap: 15px;
+    }
+
+    label {
+        font-size: 12px;
+    }
+
+    input:focus {
+        outline: none;
+    }
+</style>
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="box-title"> <i class="fa fa-arrow-right"></i>Recommend Fuel Requisition</div>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.Branch_id)
+        <div class="box-body tablefont">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <h4 style="margin-bottom:10px; color:chocolate"><i class="fa fa-info-circle"></i>Recommend Fuel Requisition</h4>
+            <div class="row" style="margin-block:35px">
+                <div class="col-md-3 col-sm-12">
+                    <label>Fuel Request No.</label><br />
+                    <input type="text" readonly value="@Model.FuelRequestNo" style="border:none;" />
+                </div>
+                <div class="col-md-3 col-sm-12">
+                    <label>Requested By</label><br />
+                    <input type="text" readonly value="@Model.RequestedBy" style="border:none" />
+                </div>
+                <div class="col-md-3 col-sm-12">
+                    <label>Requesting Branch</label><br />
+                    <input type="text" readonly value="@Model.BranchName" style="border:none" />
+                </div>
+            </div>
+            <div id="tadd" style="overflow:auto">
+                <table class="table table-bordered noDataTable" id="tbl_create">
+                    <thead class="thead-dark" style="height:20px">
+                        <tr>
+                            <th class="hidden">Id</th>
+                            <th>Fuel Cat</th>
+                            <th>Vehicle Cat</th>
+                            <th>Vendor</th>
+                            <th>Vehicle No.</th>
+                            <th>Coupon No.</th>
+                            <th>Prev. KM Run</th>
+                            <th>Current. KM Run</th>
+                            <th>Total KM Run</th>
+                            <th>Unit</th>
+                            <th>Req. Qty</th>
+                            @if (Model.Branch_id != 12)
+                            {
+                                <th>File View </th>
+                            }
+                            <th>Recommended Qty</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.inreqList.OrderBy(x => x.Id))
+                        {
+                            <tr>
+                                <td class="hidden">
+                                    @Html.DisplayFor(model => item.Id)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => item.Fuel_Category)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => item.Vehicle_Category)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => item.Vendor)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => item.Vehicle_No)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => item.Coupon_No)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => item.Previous_KM_Run)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => item.KM_Run)
+                                </td>
+                                <td>
+                                    @Math.Abs(Convert.ToInt32(item.KM_Run) - Convert.ToInt32(item.Previous_KM_Run))
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => item.Unit)
+                                </td>
+                                <td id="requqty">
+                                    @Html.DisplayFor(model => item.Requested_Quantity)
+                                </td>
+                                @if (Model.Branch_id != 12)
+                                {
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(item.FilePath))
+                                        {
+                                            <a href="~/Content/FuelUploads/@HttpUtility.UrlEncode(Path.GetFileName(item.FilePath))" target="_blank">Preview File</a>
+                                        }
+                                        else
+                                        {
+                                            <span>No file uploaded</span>
+                                        }
+                                    </td>
+                                }
+
+                                <td id="recommendqty">
+                                    <input type="number" style="width:70px !important" value="@item.Requested_Quantity" size="5" />
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <fieldset style="list-style: circle; list-style-type: circle; width: 98%;">
+                <legend style="color:forestgreen;font:bold;font-size:small">Requisition Information</legend>
+                <div class="hidden">
+                    @Html.TextBoxFor(model => model.Id, new { id = "reqmesid" })
+                </div>
+                <div class="row">
+                    <div class="col-md-9 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Requested_Message, htmlAttributes: new { @class = "control-label" })
+                            @Html.TextAreaFor(model => model.Requested_Message, new { rows = "3", cols = "120", id = "reqmessage", @readonly = "readonly" })
+                            @Html.ValidationMessageFor(x => x.Requested_Message, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-9 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Recommended_Message, htmlAttributes: new { @class = "control-label required" })
+                            @Html.TextAreaFor(model => model.Recommended_Message, new { rows = "3", cols = "120", id = "recmessage" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-md-4 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label required">Forwarded For Approval</label>
+                        @Html.DropDownListFor(model => model.Approved_By, Model.ApproverList, new { @class = "form-control selectSearch", @id = "approvedby" })
+                        @Html.ValidationMessageFor(x => x.Approved_By, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-9 col-xs-12">
+                        <div class="form-group">
+                            @Html.Label("Rejection Message(If Rejected)", htmlAttributes: new { @class = "control-label" })
+                            @Html.TextAreaFor(model => model.Rejected_Message, new { rows = "3", cols = "150", id = "rejtmessage" })
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="box-footer">
+
+                <button type="button" data-loading-text="Saving..Please Wait.." id="saveapprove" class="btn btn-success"><i class="fa fa-forward"></i> Recommend</button>
+                <a id="rejectmessage" class="btn btn-danger"><i class="fa fa-ban"></i> Reject</a>
+                <a href="/FuelRecommend/Index" class="btn btn-default"><i class="fa fa-close"></i> Cancel</a>
+
+            </div>
+        </div>
+    }
+</div>
+<script>
+    $("#tbl_create").on("input", '#recommendqty', function (e) {
+        var reqqty = $(this).closest('tr').find('#requqty').text();
+        var recommendqty = $(this).closest('tr').find("#recommendqty :input[type='number']").val();
+        if (recommendqty == "") {
+            return 0;
+        }
+        if (parseInt(recommendqty) >= parseInt(reqqty)) {
+            alert("Recommend Qty must be smaller or equal to Requested Qty.");
+            $(this).closest('tr').find("#recommendqty :input[type=number]").val(parseInt(reqqty));
+        }
+    });
+
+    $("#saveapprove").click(function () {
+        var result = confirm("Are you sure you want to recommend?");
+        var $btn = $(this);
+
+        var Recommended__Message = $('#recmessage').val();
+        ReqMesId = $('#reqmesid').val();
+        var inreqmes = {};
+        var inreqList = [];
+        $("table tr:not(:first)").each(function () {
+            var tdlist = $(this).find("td");
+            var pItem = {
+                item: $(tdlist[0]).text(),
+                Recommended_Quantity: $(this).closest('tr').find("#recommendqty :input[type='number']").val(),
+            };
+            inreqList.push(pItem);
+        })
+        inreqmes.id = ReqMesId;
+        inreqmes.inreqList = inreqList;
+        inreqmes.Recommended_message = Recommended__Message;
+        inreqmes.Approved_By = $('#approvedby :selected').val();
+        if (inreqmes.Recommended_message != "" && result) {
+            if (inreqmes.Approved_By == "0" || inreqmes.Approved_By == "") {
+                alert("Please Select Forwarded For Approval")
+                return false;
+            }
+            $btn.button('loading');
+            $.ajax({
+                url: "/api/FuelMovementApi/RecommendRequisition",
+                type: "Post",
+                contentType: "application/json",
+                data: JSON.stringify(inreqmes),
+                success: function (data) {
+                    $btn.button('reset');
+                    window.location.replace(data.RedirectUrl, true)
+                    alert("Successfully Recommended");
+                },
+                error: function (err) {
+                    $btn.button('reset');
+                    alert(err.responseJSON.Message);
+                }
+            });
+        }
+        else {
+            alert(Recommended__Message == "" ? "Please give Recommended message." : "Cancelled");
+        }
+    });
+
+    $("#rejectmessage").click(function () {
+        var $btn = $(this);
+        var result = confirm("Are you sure you want to reject?");
+        var rejectmessage = $('#rejtmessage').val();
+        ReqMesId = $('#reqmesid').val();
+        var inreqmes = {};
+        inreqmes.id = ReqMesId;
+        inreqmes.Rejected_Message = rejectmessage;
+        if (rejectmessage != "" && result) {
+            $btn.button('loading');
+            $.ajax({
+                url: "/api/FuelMovementApi/RejectRequest",
+                type: "Post",
+                contentType: "application/json",
+                data: JSON.stringify(inreqmes),
+                success: function (data) {
+                    $btn.button('reset');
+                    window.location.replace(data.RedirectUrl, true)
+                    alert("Rejected");
+                },
+                error: function (err) {
+                    $btn.button('reset');
+                    alert(err.responseJSON.Message);
+                }
+            });
+        }
+        else {
+            alert(rejectmessage == "" ? "Please give Rejection Message." : "Reject");
+        }
+    })
+
+</script>

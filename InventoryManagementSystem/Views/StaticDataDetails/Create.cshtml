@@ -1,0 +1,56 @@
+﻿@model InventoryManagementSystem.Domain.StaticDataDetailVM
+@{
+    ViewBag.Title = Model.ROWID == 0 ? "Add Static Data Details" : "Edit Static Data Details";
+}
+
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <div class="box-title">@((Model.ROWID > 0) ? Html.Raw("<i class='fa fa-pencil'></i> Edit Static Data Details") : Html.Raw("<i class='fa fa-plus'></i> Add Static Data Details"))</div>
+            <div class="box-tools pull-right">
+                <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(x => x.ROWID)
+            @Html.HiddenFor(x => x.TYPE_ID)
+            <div class="box-body formfont">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Category Group </label>
+                            <input type="text" class="form-control" value="@ViewBag.CategoryName" readonly="readonly" />
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.DETAIL_TITLE, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.DETAIL_TITLE, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(x => x.DETAIL_TITLE, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.DETAIL_DESC, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.DETAIL_DESC, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(x => x.DETAIL_DESC, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <div class="col-md-12 col-md-offset-9">
+                        <a href="/StaticDataDetails/Index/@Model.TYPE_ID" class="btn btn-default"><i class="fa fa-close"></i> Cancel</a>
+                        <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+@Scripts.Render("~/bundles/jqueryval")
+
+

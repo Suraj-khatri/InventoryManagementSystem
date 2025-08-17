@@ -1,0 +1,737 @@
+﻿
+@model InventoryManagementSystem.Domain.FuelRequestsMessageVM
+@{
+    ViewBag.Title = "Create";
+}
+<style>
+    input {
+        height: 3.4rem;
+        width: 100%;
+        border-radius: 4px;
+        box-shadow: 1px 3px 10px #939393;
+        border: 1px;
+    }
+
+    .select2-search__field {
+        height: 100% !important;
+        width: 100% !important;
+    }
+
+    input:focus {
+        outline: 1px solid #1670b5;
+    }
+
+    .form-control, .select2-selection, textarea {
+        border-radius: 4px !important;
+        box-shadow: 2px 2px 2px grey;
+        border-color: #d2d6de;
+    }
+
+    .select2-container {
+        border-radius: 4px;
+        max-width: 100%;
+    }
+
+    .button {
+        height: 30px;
+        width: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-inline: 10px;
+    }
+
+    textarea {
+        width: 100%;
+    }
+
+    .box-footer {
+        width: 100%;
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+    }
+
+    label {
+        font-size: 12px;
+    }
+</style>
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="box-title"> <i class="fa fa-arrow-right"></i>Fuel Requisition Entry</div>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    @using (Html.BeginForm("Create", "FuelRequestMessage", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.Id)
+        @Html.HiddenFor(x => x.Branch_id)
+        <div class="box-body formfont">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <p>Please enter valid data! <a style="color:red">(* Required fields)</a></p>
+            <h4 style="margin-bottom:10px; color:chocolate"><i class="fa fa-info-circle"></i> Fuel Requisition Entry</h4>
+            <fieldset style="list-style: circle; list-style-type: circle; width: 98%;">
+                <legend style="color:forestgreen;font-size:small;font:bold">Fuel Information:</legend>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label required">Fuel Category </label>
+                            @Html.DropDownListFor(
+                                model => model.fuelcat_id,
+                                new SelectList(Model.FuelCategoryList, "Value", "Text", null),
+                                "Select Fuel Category",
+                                new { @class = "form-control selectSearch", @id = "fuelcat" }
+                            )
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label required">Vehicle Category </label>
+                            @Html.DropDownListFor(
+                                model => model.vehiclecat_id,
+                                new SelectList(Model.VehicleCategoryList, "Value", "Text", null),
+                                "Select Vehicle Category",
+                                new { @class = "form-control selectSearch", @id = "vehiclecat" }
+                            )
+                        </div>
+
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label required">Fuel Vendor</label>
+                            <input list="vendorcatlist" id="vendorcat" name="Name" class="form-control" />
+                            <datalist id="vendorcatlist">
+                                @foreach (var user in Model.VendorList)
+                                {
+                                    <option>@user.Text</option>
+                                }
+                            </datalist>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label required">Vehicle No.</label>
+                            <input type="text" id="vnum" name="vnum">
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label required">Coupon No.</label>
+                            <input type="text" id="cnum" name="cnum">
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label required">Unit</label>
+                            <input type="text" readonly="readonly" id="unit" name="unit" value="LTR">
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label required">Previous KM Run</label>
+                            <input type="number" id="prevkm" disabled="disabled" name="prevkm">
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label required">Current KM Run</label>
+                            <input type="number" id="km" name="km">
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label required">Total KM Run</label>
+                            <input type="number" readonly="readonly" id="totalKM" name="totalKM">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label required">Qty(in LTR) </label>
+                            <input type="number" id="qty" name="qty">
+                        </div>
+                    </div>
+
+                    @if (Model.Branch_id != 12)
+                    {
+                        <div class="col-md-4 col-xs-12">
+                            <div class="form-group">
+                                <label class="control-label required"> Upload File</label>
+                                <input type="file" id="fileUpload" name="uploadedFile" class="form-control">
+                            </div>
+                        </div>
+
+                    }
+
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label" style="color:#fff"> add</label>
+                            <button type="button" class="button btn btn-xs btn-success" id="adddata" title="add">add</button>
+                        </div>
+                    </div>
+
+
+                    <div id="tadd">
+                        <table class="table table-bordered noDataTable" id="tbl_create">
+                            <thead class="thead-dark" style="height:20px">
+                                <tr>
+                                    <th>Fuel Cat</th>
+                                    <th>Vehicle Cat</th>
+                                    <th>Vendor</th>
+                                    <th>Vehicle No.</th>
+                                    <th>Coupon No.</th>
+                                    <th>Prev. KM Run</th>
+                                    <th>Current KM Run</th>
+                                    <th>Unit</th>
+                                    <th>Qty</th>
+                                    @if (Model.Branch_id != 12)
+                                    {
+                                        <th>File</th>
+                                    }
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="datalist"></tbody>
+                        </table>
+                    </div>
+            </fieldset>
+            <fieldset style="list-style: circle; list-style-type: circle; width: 98%;">
+                <legend style="color:forestgreen;font:bold;font-size:small">Order Information:</legend>
+                <div class="row">
+                    <div class="col-md-12 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Requested_Message, htmlAttributes: new { @class = "control-label required" })
+                            @Html.TextAreaFor(model => model.Requested_Message, new { rows = "3", id = "reqmessage" })
+                            @Html.ValidationMessageFor(x => x.Requested_Message, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label required">Forwarded For Recommendation</label>
+                            @Html.DropDownListFor(model => model.Recommended_By, Model.SuperVisorList, new { @class = "form-control selectSearch", @id = "recommendedby" })
+                            @Html.ValidationMessageFor(x => x.Recommended_By, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label required">Priority </label>
+                            @Html.DropDownListFor(model => model.priority_id, Model.PriorityList, new { @class = "form-control selectSearch", @id = "priority" })
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="box-footer">
+                <div class="col-md-12 col-md-offset-5">
+                    <button type="button" data-loading-text="Saving..Please Wait.." id="saveorder" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
+                    <a id="cancelButton" class="btn btn-default"><i class="fa fa-close"></i> Cancel</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<script>
+    let imageList = {};
+    $("#cancelButton").click(function () {
+        var result = confirm("Are you sure you want to cancel?");
+        if (result) {
+            window.location.href = "/FuelRequest/Index";
+        } else {
+            console.log("Cancel clicked. Remaining on the same page.");
+        }
+    });
+    var temppur = [];
+    $("#datalist").on('click', '.btnDelete', function (event) {
+        $(this).closest('tr').remove();
+        console.log(imageList[`#pqt2${temppur.findIndex(x => x.Id == event.target.id)}`], temppur.findIndex(x => x.Id == event.target.id), temppur, event.target.id)
+        delete imageList[`#pqt2${event.target.id}`]
+        temppur.splice(temppur.findIndex(x => x.Id == event.target.id), 1);
+        console.log(imageList)
+    });
+
+    $("#adddata").click(function () {
+        var Id = $('#fuelcat :selected').val();
+        checkDuplicateRecord(function (isDuplicate) {
+            if (isDuplicate) {
+
+                return;
+            }
+            if ($('#Branch_id').val() != 12) {
+                if (!$('#fileUpload').val()) {
+                    alert("Please upload a file before adding data.");
+                    $('#fileUpload').focus();
+                    return;
+                }
+            }
+          
+
+            if (temppur.find(x => x.Id == Id)) {
+                alert("This Fuel Category has been already added!");
+                $("#fuelcat").focus();
+            }
+            else if (temppur.length >= 24) {
+                alert("Sorry, 25 Fuel Category only per requisition!");
+            }
+            else {
+                checkfuelStatus();
+            }
+        });
+    });
+
+
+
+
+    $('#km, #prevkm').keyup(function () {
+        var tpkm = $('#km').val();
+        var tpprevkm = $('#prevkm').val();
+        if ((tpkm - tpprevkm) > 0) {
+            $('#totalKM').val((tpkm - tpprevkm));
+        }
+        else {
+            $('#totalKM').val(0);
+        }
+    });
+
+
+    function checkfuelStatus() {
+        $.ajax({
+            url: '/FuelRequest/VerifyFuelStatus',
+            type: 'GET',
+            data: { vehicleNo: $('#vnum').val() },
+            contentType: "application/json",
+            success: function (response) {
+                if (!response) {
+                    alert("Previous Fuel Request is Pending. Please wait for Approval!!");
+                    return false;
+                }
+                else {
+                    tempproduct();
+                }
+            }
+        });
+    }
+
+    function checkDuplicateRecord(callback) {
+        $.ajax({
+            url: '/FuelRequest/CheckIfRequestExists',
+            type: 'Get',
+            data: {
+                /*vehicleNo: $('#vnum').val(),*/
+                couponNO: $('#cnum').val()
+                /* currentKm: $('#km').val()*/
+            },
+            contentType: "application/json",
+            success: function (response) {
+                if (response.success) {
+                    // No duplicates found
+                    callback(false);
+                } else {
+                    // Duplicate found
+                    alert(response.message);
+                    callback(true)
+                }
+            },
+            error: function () {
+                alert("Coupon no. already exists.");
+                callback(false); // Consider it as a duplicate in case of error
+            }
+        });
+    }
+    function tempproduct() {
+        var tppname = $('#fuelcat :selected').text();
+        var tpvname = $('#vehiclecat :selected').text();
+        var tpvendname = $('#vendorcat').val();
+        var tpkm = $('#km').val();
+        var tpprevkm = $('#prevkm').val();
+        var tpvnum = $('#vnum').val();
+        var tpcnum = $('#cnum').val();
+        var tpunit = $('#unit').val();
+        var tpqty = $('#qty').val();
+        var fileInput = $('#fileUpload')[0];
+        var totalkm = $('#totalKM').val();
+
+        if (totalkm == 0) {
+            alert("Current KM Run should be greater Than Previous KM Run");
+            return false;
+        }
+
+        if (tppname.trim() != "Select Fuel Category") {
+            if (tpvname.trim() != "Select Vehicle Category") {
+                if (tpvendname != null && tpvendname !== "") {
+                    if (tpvnum != null && tpvnum !== "") {
+                        if (tpcnum != "") {
+                            if (tpprevkm != "") {
+                                if (tpkm != "") {
+                                    if (tpqty != "") {
+                                        if ($('#Branch_id').val() !== '12') {
+                                            addfileifnot12();
+                                        }
+                                        else {
+                                            addfileif12();
+                                        }
+                                    } else {
+                                        alert("Quantity should not be null");
+                                    }
+                                } else {
+                                    alert("Current KM run should not be empty");
+                                }
+                            } else {
+                                alert("Previous KM run should not be empty");
+                            }
+                        } else {
+                            alert("Coupon number should not be empty");
+                        }
+                    } else {
+                        alert("Vehicle number should not be empty");
+                    }
+                } else {
+                    alert("Select Vendor Category");
+                }
+            } else {
+                alert("Select Vehicle Category");
+            }
+        } else {
+            alert("Select Fuel Category");
+        }
+    }
+
+    //    function tempproduct() {
+    //    var tppname = $('#fuelcat :selected').text();
+    //    var tpvname = $('#vehiclecat :selected').text();
+    //    var tpvendname = $('#vendorcat').val();
+    //    var tpkm = $('#km').val();
+    //    var tpprevkm = $('#prevkm').val();
+    //    var tpvnum = $('#vnum').val();
+    //    var tpcnum = $('#cnum').val();
+    //    var tpunit = $('#unit').val();
+    //    var tpqty = $('#qty').val();
+    //    var fileInput = $('#fileUpload')[0];
+    //    var totalkm = $('#totalKM').val();
+
+    //    if (totalkm == 0) {
+    //        alert("Current KM Run should be greater Than Previous KM Run");
+    //        return false;
+    //    }
+
+    //    if (tppname.trim() != "Select Fuel Category") {
+    //        if (tpvname.trim() != "Select Vehicle Category") {
+    //            if (tpvendname != null && tpvendname !== "") {
+    //                if (tpvnum != null && tpvnum !== "") {
+    //                    if (tpcnum != "") {
+    //                        if (tpprevkm != "") {
+    //                            if (tpkm != "") {
+    //                                if (tpqty != "") {
+    //                                    if (fileInput.files.length > 0) {
+    //                                        var file = fileInput.files[0];
+    //                                        var reader = new FileReader();
+
+    //                                        reader.onload = function (e) {
+    //                                            var fileUrl = e.target.result;
+
+    //                                            $('#tadd').show();
+    //                                            $('#datalist').append('<tr>' +
+    //                                                '<td id="pname">' + tppname + '</td>' +
+    //                                                '<td id="vname">' + tpvname + '</td>' +
+    //                                                '<td id="vendname">' + tpvendname + '</td>' +
+    //                                                '<td id="vnum">' + tpvnum + '</td>' +
+    //                                                '<td id="cnum">' + tpcnum + '</td>' +
+    //                                                '<td id="prevkm">' + tpprevkm + '</td>' +
+    //                                                '<td id="km">' + tpkm + '</td>' +
+    //                                                '<td>' + tpunit + '</td>' +
+    //                                                '<td id="pqty">' + tpqty + '</td>' +
+    //                                                '<td id="fileUpload">' +
+    //                                                '<a href="' + fileUrl + '" target="_blank">Preview File</a>' +
+    //                                                '</td>' +
+    //                                                '<td>' +
+    //                                                '<a class="btn btn-xs btnDelete" id="delete-' + temppur.length + '">Delete</a>' +
+    //                                                '</td>' +
+    //                                                '</tr>');
+
+    //                                            imageList[`#pqt2${temppur.length}`] = file;
+    //                                            temppur.push({ Id: temppur.length });
+
+    //                                            // Reset fields
+    //                                            $("#fuelcat").val("").trigger("change");
+    //                                            $("#vehiclecat").val("").trigger("change");
+    //                                            $("#vendorcat").val("").trigger("change");
+    //                                            $('#prevkm').val('');
+    //                                            $('#km').val('');
+    //                                            $('#totalKM').val('');
+    //                                            $('#vnum').val('');
+    //                                            $('#cnum').val('');
+    //                                            $("#unit").val('LTR');
+    //                                            $("#qty").val('');
+    //                                            $("#fuelcat").focus();
+    //                                            $("#fileUpload").val('');
+    //                                        };
+
+    //                                        reader.readAsDataURL(file);
+    //                                    } else {
+    //                                        alert("Please upload a valid file");
+    //                                        return false;
+    //                                    }
+    //                                } else {
+    //                                    alert("Quantity should not be null");
+    //                                }
+    //                            } else {
+    //                                alert("Current KM run should not be empty");
+    //                            }
+    //                        } else {
+    //                            alert("Previous KM run should not be empty");
+    //                        }
+    //                    } else {
+    //                        alert("Coupon number should not be empty");
+    //                    }
+    //                } else {
+    //                    alert("Vehicle number should not be empty");
+    //                }
+    //            } else {
+    //                alert("Select Vendor Category");
+    //            }
+    //        } else {
+    //            alert("Select Vehicle Category");
+    //        }
+    //    } else {
+    //        alert("Select Fuel Category");
+    //    }
+    //}
+
+
+    $("#saveorder").click(function () {
+        var result = confirm("Are you sure you want to save?");
+        var $btn = $(this);
+        var priority = $('#priority :selected').text();
+        var recommendedby = $('#recommendedby :selected').val();
+        var reqmessage = $('#reqmessage').val();
+        var inreqmes = {};
+        var inreqList = [];
+
+
+        $("table tr:not(:first)").each(function () {
+            var tdlist = $(this).find("td");
+            var pItem = {
+                fuel_category: $(tdlist[0]).html(),
+                vehicle_category: $(tdlist[1]).html(),
+                vendor: $(tdlist[2]).html(),
+                vehicle_no: $(tdlist[3]).html(),
+                coupon_no: $(tdlist[4]).html(),
+                previous_km_run: $(tdlist[5]).html(),
+                km_run: $(tdlist[6]).html(),
+                unit: $(tdlist[7]).html(),
+                requested_quantity: $(tdlist[8]).html(),
+
+            };
+            inreqList.push(pItem);
+        })
+
+
+        inreqmes.inreqList = inreqList;
+        inreqmes.Requested_Message = reqmessage;
+        inreqmes.priority = priority;
+        inreqmes.Recommended_By = recommendedby;
+        if (result) {
+            if (recommendedby == "0" || recommendedby == "") {
+                alert("Please Select Forwarded For Recommendation")
+                return false;
+            }
+
+            var formData = new FormData();
+
+            for (let i = 0; i < Object.keys(imageList).length; i++) {
+
+                formData.append(`file${i}`, imageList[`#pqt2${i}`]);
+
+            }
+            formData.append("inreqmes", JSON.stringify(inreqmes));
+            $.ajax({
+                url: "/api/FuelMovementApi/Create",
+                type: "Post",
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: function (data) {
+                    $btn.button('reset');
+                    window.location.replace(data.RedirectUrl, true)
+                    alert("successfully requested");
+                },
+                error: function (err) {
+                    $btn.button('reset');
+                    alert(err.responseJSON.Message);
+                }
+            });
+        }
+        else {
+            // If the user clicks "Cancel" in the confirmation box, you can handle it here.
+            alert("Save canceled.");
+        }
+    });
+
+    $('#vnum').keyup(function () {
+        var vehicleNo = $('#vnum').val();
+        if (vehicleNo) {
+            $.ajax({
+                url: "/FuelRequest/GetPreviousKMRun",
+                type: "GET",
+                data: { vehicleNo: vehicleNo },
+                contentType: "application/json",
+                success: function (response) {
+                    if (response) {
+                        $("#prevkm").val('');
+                        $("#km").val('');
+                        $("#totalKM").val('');
+                        $("#prevkm").prop("disabled", true);
+                        $("#prevkm").val(response);
+                    }
+                    else {
+                        $("#prevkm").val('');
+                        $("#km").val('');
+                        $("#totalKM").val('');
+                        $("#prevkm").prop("disabled", false);
+                    }
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            });
+        }
+    });
+    function addfileif12() {
+        var tppname = $('#fuelcat :selected').text();
+        var tpvname = $('#vehiclecat :selected').text();
+        var tpvendname = $('#vendorcat').val();
+        var tpkm = $('#km').val();
+        var tpprevkm = $('#prevkm').val();
+        var tpvnum = $('#vnum').val();
+        var tpcnum = $('#cnum').val();
+        var tpunit = $('#unit').val();
+        var tpqty = $('#qty').val();
+        var fileInput = $('#fileUpload')[0];
+        var totalkm = $('#totalKM').val();
+        $('#tadd').show();
+        $('#datalist').append('<tr>' +
+            '<td id="pname">' + tppname + '</td>' +
+            '<td id="vname">' + tpvname + '</td>' +
+            '<td id="vendname">' + tpvendname + '</td>' +
+            '<td id="vnum">' + tpvnum + '</td>' +
+            '<td id="cnum">' + tpcnum + '</td>' +
+            '<td id="prevkm">' + tpprevkm + '</td>' +
+            '<td id="km">' + tpkm + '</td>' +
+            '<td>' + tpunit + '</td>' +
+            '<td id="pqty">' + tpqty + '</td>' +
+            '<td>' +
+            '<a class="btn btn-xs btnDelete" id="delete-' + temppur.length + '">Delete</a>' +
+            '</td>' +
+            '</tr>');
+
+
+        temppur.push({ Id: temppur.length });
+
+        // Reset fields
+        $("#fuelcat").val("").trigger("change");
+        $("#vehiclecat").val("").trigger("change");
+        $("#vendorcat").val("").trigger("change");
+        $('#prevkm').val('');
+        $('#km').val('');
+        $('#totalKM').val('');
+        $('#vnum').val('');
+        $('#cnum').val('');
+        $("#unit").val('LTR');
+        $("#qty").val('');
+        $("#fuelcat").focus();
+        $("#fileUpload").val('');
+   
+    }
+
+    function addfileifnot12() {
+        var tppname = $('#fuelcat :selected').text();
+        var tpvname = $('#vehiclecat :selected').text();
+        var tpvendname = $('#vendorcat').val();
+        var tpkm = $('#km').val();
+        var tpprevkm = $('#prevkm').val();
+        var tpvnum = $('#vnum').val();
+        var tpcnum = $('#cnum').val();
+        var tpunit = $('#unit').val();
+        var tpqty = $('#qty').val();
+        var fileInput = $('#fileUpload')[0];
+        var totalkm = $('#totalKM').val();
+        if (fileInput.files.length > 0) {
+            var file = fileInput.files[0];
+            var fileExtension = file.name.split('.').pop().toLowerCase();
+
+            // Check if file is of allowed type (jpeg, png, jpg)
+            if (['jpeg', 'png', 'jpg','pdf'].includes(fileExtension)) {
+                var reader = new FileReader();
+
+                // Handle the file preview
+                reader.onload = function (e) {
+                    var fileUrl = e.target.result;
+                    var fileName = file.name;
+
+                    var blob = new Blob([file], { type: file.type });
+                    var fileUrl = URL.createObjectURL(blob);
+
+                    // Create a clickable link to open the file in a new window
+                    var previewContent = '<a href="' + fileUrl + '" target="_blank" id="file-' + temppur.length + '">' + fileName + '</a>';
+
+                    // Append row with file preview link
+                    $('#tadd').show();
+                    $('#datalist').append('<tr>' +
+                        '<td id="pname">' + tppname + '</td>' +
+                        '<td id="vname">' + tpvname + '</td>' +
+                        '<td id="vendname">' + tpvendname + '</td>' +
+                        '<td id="vnum">' + tpvnum + '</td>' +
+                        '<td id="cnum">' + tpcnum + '</td>' +
+                        '<td id="prevkm">' + tpprevkm + '</td>' +
+                        '<td id="km">' + tpkm + '</td>' +
+                        '<td>' + tpunit + '</td>' +
+                        '<td id="pqty">' + tpqty + '</td>' +
+                        '<td id="filePreview">' + previewContent + '</td>' +
+                        '<td>' +
+                        '<a class="btn btn-xs btnDelete" id="delete-' + temppur.length + '">Delete</a>' +
+                        '</td>' +
+                        '</tr>');
+
+                    imageList[`#pqt2${temppur.length}`] = file;
+                    temppur.push({ Id: temppur.length });
+
+                    // Reset fields
+                    $("#fuelcat").val("").trigger("change");
+                    $("#vehiclecat").val("").trigger("change");
+                    $("#vendorcat").val("").trigger("change");
+                    $('#prevkm').val('');
+                    $('#km').val('');
+                    $('#totalKM').val('');
+                    $('#vnum').val('');
+                    $('#cnum').val('');
+                    $("#unit").val('LTR');
+                    $("#qty").val('');
+                    $("#fuelcat").focus();
+                    $("#fileUpload").val('');
+                };
+
+                reader.readAsDataURL(file);
+            } else {
+                alert("Only .jpeg, .png, .jpg and .pdf file types are allowed.");
+                return false;
+            }
+        } else {
+            alert("Please upload a valid file");
+            return false;
+        }
+    }
+</script>

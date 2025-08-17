@@ -1,0 +1,75 @@
+﻿@model InventoryManagementSystem.Domain.INBranchVM
+@{
+    ViewBag.Title = "Product Assignment With Branch";
+}
+
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="box-title">Product Assignment With Branch</div>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.ID)
+        <div class="box-body formfont">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="row">
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label">Product Group </label>
+                        @Html.DropDownListFor(model => model.ProdGrpId, Model.ProductGroupList, new { @class = "form-control selectSearch" })
+                    </div>
+                </div>
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Branches.BRANCH_NAME, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.BRANCH_ID, Model.BranchList, new { @class = "form-control selectSearch" })
+                        @Html.ValidationMessageFor(x => x.BRANCH_ID, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.INVENTORY_AC, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.INVENTORY_AC, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PURCHASE_AC, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.PURCHASE_AC, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.IS_ACTIVE, htmlAttributes: new { @class = "control-label" })
+                        <div>
+                            @Html.RadioButtonFor(model => model.IS_ACTIVE, true) Yes
+                            @Html.RadioButtonFor(model => model.IS_ACTIVE, false) No
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="box-footer">
+                <div class="col-md-12 col-md-offset-9">
+                    @*<a href="/BranchWiseProductDetails/Index" class="btn btn-default"><i class="fa fa-close"></i> Cancel</a>*@
+                    <button type="submit" data-loading-text="Saving..Please Wait.." id="assignproduct" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    $("#assignproduct").click(function () {
+        var $btn = $(this);
+        $btn.button('loading');
+    });
+</script>

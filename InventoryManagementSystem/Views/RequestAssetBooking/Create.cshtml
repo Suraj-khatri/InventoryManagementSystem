@@ -1,0 +1,219 @@
+﻿@model InventoryManagementSystem.Domain.FixedAssetsViewModel.AssetInventoryTempVM
+@{
+    ViewBag.Title = "Asset Booking Entry";
+}
+
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="box-title">Asset Booking Entry Details</div>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.id)
+
+        <div class="box-body formfont">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <p>Please enter valid data! <a style="color:red">(* Required fields)</a></p>
+            <fieldset style="list-style: circle; list-style-type: circle; width: 98%;">
+                <legend style="color:orangered;font-size:small;font:bold"> Asset Booking Entry </legend>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Branch Name </label>
+                            @Html.DropDownListFor(model => model.branch_id, Model.BranchNameList, new { @class = "form-control selectSearch" })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Department Name </label>
+                            @Html.DropDownListFor(model => model.dept_id, Model.DepartmentList, new { @class = "form-control selectSearch" })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Vendor Name </label>
+                            @Html.DropDownListFor(model => model.VendorId, Model.VendorNameList, new { @class = "form-control selectSearch" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Asset Type </label>
+                            @Html.DropDownListFor(model => model.product_id, Model.AssetProductList, new { @class = "form-control selectSearch" })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label required">Number Of Asset Qty. </label>
+                            @Html.EditorFor(model => model.assetqty, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(x => x.assetqty, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Booking Date </label>
+                            @Html.EditorFor(model => model.booked_date, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(x => x.booked_date, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label required">Purchase Value </label>
+                            @Html.EditorFor(model => model.purchase_value, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(x => x.purchase_value, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Accumulated Depreciation </label>
+                            @Html.EditorFor(model => model.acc_depriciation, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Dep. Start Date </label>
+                            @Html.EditorFor(model => model.depr_start_date, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(x => x.depr_start_date, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Purchase Date </label>
+                            @Html.EditorFor(model => model.purchase_date, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Asset Status </label>
+                            @Html.DropDownListFor(model => model.asset_status, Model.AssetStatusList, new { @class = "form-control selectSearch" })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Bill Info </label>
+                            @Html.EditorFor(model => model.bill_id, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Insurance Info </label>
+                            @Html.EditorFor(model => model.ins_id, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Asset Holder </label>
+                            @Html.EditorFor(model => model.asset_holder, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Next Maintenance Date </label>
+                            @Html.EditorFor(model => model.next_maintenance_date, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Old Asset Code </label>
+                            @Html.EditorFor(model => model.old_asset_code, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Old Asset Number</label>
+                            @Html.EditorFor(model => model.old_asset_no, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Model No</label>
+                            @Html.EditorFor(model => model.model, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Brand </label>
+                            @Html.EditorFor(model => model.brand, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Asset Serial No </label>
+                            @Html.EditorFor(model => model.asset_serial, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Depreciation Pct. </label>
+                            @Html.EditorFor(model => model.depre_pct, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Warranty Expiry Date</label>
+                            @Html.EditorFor(model => model.warr_expiry, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Is Amortised Asset</label>
+                            @Html.CheckBoxFor(model=>model.is_amortised)
+                            @*<input type="checkbox" class="custom-control-input" id="defaultchecked">*@
+                            @Html.EditorFor(model => model.life_in_month, new { htmlAttributes = new { @class = "form-control",@placeholder="Total Life In Month" } })
+                            @Html.EditorFor(model => model.remain_month, new { htmlAttributes = new { @class = "form-control",@placeholder="Remain Life In Month" } })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Forwarded For Approval</label>
+                            @Html.DropDownListFor(model => model.forwarded_by, Model.EmployeeList, new { @class = "form-control selectSearch" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Rejection Reason</label>
+                            @Html.EditorFor(model => model.rejection_reason, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Narration</label>
+                            @Html.EditorFor(model => model.narration, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="box-footer">
+                <div class="col-md-12 col-md-offset-9">
+                    <a href="/RequestAssetBooking/Index" class="btn btn-default"><i class="fa fa-close"></i> Cancel</a>
+                    <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+
+

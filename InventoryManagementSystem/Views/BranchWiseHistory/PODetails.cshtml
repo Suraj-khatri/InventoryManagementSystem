@@ -1,0 +1,455 @@
+﻿@model InventoryManagementSystem.Domain.InRequisitionMessageVM
+@{
+    ViewBag.Title = "Generate P.O.";
+}
+
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="box-title"> <i class="fa fa-arrow-right"></i>Generate P.O.</div>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.id)
+        <div class="box-body formfont">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <h4 style="margin-bottom:10px; color:chocolate"><i class="fa fa-info-circle"></i> Generate P.O.</h4>
+            <label class="control-label" style="font-size: 15px">Check For Without VAT PO</label>
+            <input type="checkbox" id="defaultUnchecked">
+            <div class="row">
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label">Vendor Name </label>
+                        @Html.DropDownListFor(model => model.vendor_id, Model.VendorList, new { @class = "form-control selectSearch", @id = "vendorname" })
+                    </div>
+                </div>
+            </div>
+            <div id="tadd">
+                <table class="table table-bordered table-sm noDataTable" id="tbl_po">
+                    <thead class="thead-dark" style="height:20px">
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Approve Qty</th>
+                            <th>Unit</th>
+                            <th>Stock In Hand</th>
+                            <th style="text-align:center">
+                                <input type="checkbox" name="masterCheck" id="masterCheck" />
+                            </th>
+                            <th>
+                                Rate
+                            </th>
+                            <th>
+                                Amount
+                            </th>
+                            <th>
+                                Other
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="approvedatalist">
+                        @{ int i = 1;}
+                        @foreach (var item in Model.inreqList.OrderBy(x=>x.ProductName.Trim()))
+                        {
+                            string TotalAmount = i + "TotalAmount";
+                            item.TotalAmount = item.p_rate * item.Approved_Quantity;
+                            <tr>
+                                <td id="pname">
+                                    @Html.DisplayFor(model => item.ProductName)
+                                </td>
+                                <td id="approveqty" style="width:3%">
+                                    <input type="number" name="approveqty" value="@item.Approved_Quantity" size="5" />
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => item.unit)
+                                </td>
+                                <td style="text-align:center">
+                                    @Html.DisplayFor(model => item.stockinhand)
+                                </td>
+                                <td style="text-align:center">
+                                    <input type="checkbox" id="@i" class="checkeditem" name="row-check" />
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(model => item.p_rate)
+                                </td>
+                                <td class="@TotalAmount">
+                                    @Html.DisplayFor(model => item.TotalAmount)
+                                </td>
+                                @if (item.serialstatus == true)
+                                {
+                                    <td style="text-align:center">
+                                        <a class="btn btn-xs btnAdd" data-toggle="modal" data-target="#SerialProductModal">Add</a>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+                                <td class="hidden" id="oldapproveqty">
+                                    @Html.DisplayFor(model => item.Approved_Quantity)
+                                </td>
+                            </tr>
+                            i++;
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr id="tfooter"></tr>
+                    </tfoot>
+                </table>
+            </div>
+            <fieldset style="list-style: circle; list-style-type: circle; width: 98%;">
+                <legend style="color:forestgreen;font:bold;font-size:small">Order Information:</legend>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            @Html.Label("Order Date", htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.OrderDate, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(x => x.OrderDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            @Html.Label("Forwarded For Approval To", htmlAttributes: new { @class = "control-label" })
+                            @Html.DropDownListFor(model => model.Forwarded_To, Model.EmployeeList, new { @class = "form-control selectSearch" })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            @Html.Label("Last Date Of Delivery", htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.LastDateOfDelivery, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(x => x.LastDateOfDelivery, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset style="list-style: circle; list-style-type: circle; width: 98%;">
+                <legend style="color:forestgreen;font:bold;font-size:small">PO Notes:</legend>
+                @Html.TextAreaFor(model => model.PONotes, new { rows = "3", cols = "150" })
+            </fieldset>
+            <fieldset style="list-style: circle; list-style-type: circle; width: 98%;">
+                <legend style="color:forestgreen;font:bold;font-size:small">PO Specification:</legend>
+                @Html.TextAreaFor(model => model.POSpecification, new { @style = "width:100%" })
+            </fieldset>
+            <div class="box-footer">
+                <div class="col-md-12 col-md-offset-9">
+                    <button type="button" data-loading-text="Saving..Please Wait.." id="savepo" class="btn btn-success"><i class="fa fa-save"></i> Save PO</button>
+                    <a href="/DispatchRequisition/Index" class="btn btn-default"><i class="fa fa-close"></i> Cancel</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="modal fade" id="SerialProductModal" data-backdrop="static" data-keyboard="false" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="color:chocolate"><i class="fa fa-info-circle fa-lg"></i> <strong>Product Other Information</strong></h4>
+            </div>
+            <div class="modal-body list-modal">
+                <div id="prodinfo">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-xs btn-success serialnosave" title="Save">Save</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var tsum = 0.00;
+    var tqty = 0;
+    var tpname = "";
+    var vatamt = 0.00;
+    var serialnototalqty = 0;
+    var sntq = 0;
+
+    $(function () {
+        $("#masterCheck").on("click", function () {
+            if ($("input:checkbox[name='masterCheck']").prop("checked")) {
+                $("input:checkbox[name='row-check']").prop("checked", true);
+                footer();
+            } else {
+                $("input:checkbox[name='row-check']").prop("checked", false);
+                 $('#tfooter').empty();
+            }
+        });
+
+        $("input:checkbox[name='row-check']").on("change", function () {
+            var total_check_boxes = $("input:checkbox[name='row-check']").length;
+            var total_checked_boxes = $("input:checkbox[name='row-check']:checked").length;
+
+            if (total_check_boxes === total_checked_boxes) {
+                $("#masterCheck").prop("checked", true);
+                 footer();
+            }
+            else {
+                $("#masterCheck").prop("checked", false);
+                 footer();
+            }
+        });
+    });
+
+    function footer() {
+        var total = 0
+        $('#tfooter').empty();
+        $('.checkeditem:checked').each(function () {
+            total += parseFloat($("." + $(this).attr("id") + "TotalAmount").text());
+        });
+        tsum = total;
+        if (!$('#defaultUnchecked').prop("checked")) {
+            vatamt = parseFloat(13 / 100 * tsum);
+        } else {
+            vatamt = 0.00;
+        }
+
+        $('#tfooter').append('<th>' + '</th>' +
+            '<th>' + '</th>' +
+            '<th>' + '</th>' +
+            '<th>' + '</th>' +
+            '<th>' + '</th>' +
+            '<th>' + 'Sub Total :' + '</br>' + '13% VAT :' + '</br>' + 'Total Amount: ' + '</th > ' +
+            '<th id="sumtot">' + (tsum).toFixed(2) + '</br>' + vatamt.toFixed(2) + '</br>' + (parseFloat(tsum) + parseFloat(vatamt)).toFixed(2) + '</th' +
+            '<th>' + '</th >' +
+            '<th>' + '</th >');
+    }
+
+    $("#approvedatalist").on('click', '.btnAdd', function () {
+        $('#prodinfo').empty();
+        serialnototalqty = 0;
+        tpname = $(this).closest('tr').find("#pname").text();
+        tqty =$(this).closest('tr').find("#approveqty :input[type='number']").val();
+        $('#SerialProductModal').show();
+
+    $.ajax({
+        url: "/DispatchRequisition/GetDetailIdandPurIdFromInRequisitionDetailOther",
+        type: "Post",
+        data: { inreqmesid: @Model.id, 'prodname': tpname },
+        success: function (data) {
+            if (data.length > 0) {
+                $.each(data, function (i, item) {
+                    var rows = 'Product Name : ' + tpname + '&nbsp' + '&nbsp' + 'Total Qty : ' + item.qty +
+                        '<table class="table table-bordered noDataTable">' +
+                        '<thead class="thead-dark" style="height:20px">' +
+                        '<tr>' +
+                        '<th>Serial From</th>' +
+                        '<th>Serial To</th>' +
+                        '<th id="tpoqty">Qty</th>' +
+                        '</tr>' +
+                        '</thead>' +
+                        '<tbody id ="datalistsn">' +
+                        '<tr>' +
+                        '<td>' + item.sn_from + '</td >' +
+                        '<td>' + item.sn_to + '</td >' +
+                        '<td id="sqty">' + item.qty + '</td>' +
+                        '</tr >'
+                    '</tbody>' +
+                        '</table >'
+                    '</fieldset >'
+                    $('#prodinfo').append(rows);
+                })
+            }
+            else {
+                var rows = 'Product Name : ' + tpname + '&nbsp' + '&nbsp' + 'Total Qty : ' + tqty +
+                    '<fieldset id="addtbllist" style="list-style: circle; list-style-type: circle; width: 100%;">' +
+                    '<legend style="color:forestgreen;font-size:small;font:bold">Other Information:</legend>' +
+                    '<div class="col-md-3 col-xs-12">' +
+                    '<div class="form-group">' +
+                    '<label class="control-label">Qty: </label>' +
+                    '<input type="number" id="qtysn" name="qty">' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="col-md-3 col-xs-12">' +
+                    '<div class="form-group">' +
+                    '<label class="control-label">S.N From:  </label>' +
+                    '<input type="number" id="snf" name="snf">' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="col-md-3 col-xs-12">' +
+                    '<div class="form-group">' +
+                    '<label class="control-label">S.N. To: </label>' +
+                    '<input type="number" readonly id="snt" name="snt">' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="col-md-3 col-xs-12">' +
+                    '<a class="btn btn-xs btn-success pull-right addsnlist" title="Add">Add</a>' +
+                    '</div>' +
+                    '<table class="table table-bordered noDataTable">' +
+                    '<thead class="thead-dark" style="height:20px">' +
+                    '<tr>' +
+                    '<th>Serial From</th>' +
+                    '<th>Serial To</th>' +
+                    '<th id="tpoqty">Qty</th>' +
+                    //'<th>Action</th>' +
+                    '</tr>' +
+                    '</thead>' +
+                    '<tbody id ="datalistsn">' +
+                    '</tbody>' +
+                    '</table >'
+                '</fieldset >'
+                $('#prodinfo').append(rows);
+            }
+        },
+        error: function (xhr) {
+            alert("error occured");
+        }
+    });
+    });
+
+    $("#prodinfo").on('click', '.addsnlist', function () {
+        var snf = $('#snf').val();
+        var snt = $('#snt').val();
+        var qtysn = $('#qtysn').val();
+    $.ajax({
+        url: "/PurchaseVoucher/CheckIfSerailNoExists",
+        type: "Post",
+        data: { snf: snf, snt: snt, tpname: tpname },
+        success: function (data) {
+            if (data > 0) {
+                alert("This Range of Serial No. For This Product Already Exists!!");
+            }
+            else {
+                serialnototalqty += parseFloat(qtysn);
+
+                if (parseInt(serialnototalqty) <= parseInt(tqty)) {
+                    if (snf !== "" && snt > 0) {
+                        $('#datalistsn').append('<tr>' +
+                            '<td>' + snf + '</td >' +
+                            '<td>' + snt + '</td >' +
+                            '<td id="sqty">' + qtysn + '</td>' +
+                            //'<td>' + '<a class="btn btn-xs btnsnDelete">Delete</a>' + '</td>' +
+                            '</tr >');
+                        var irdo = {};
+                        irdo.qty = qtysn;
+                        irdo.sn_from = snf;
+                        irdo.sn_to = snt;
+                        irdo.detail_id =  @Model.id;
+                        irdo.productname = tpname
+                        $.ajax({
+                            url: "/api/InvMovementApi/InRequisitionDetailOtherCreate",
+                            type: "Post",
+                            contentType: "application/json",
+                            data: JSON.stringify(irdo),
+                            success: function (data) {
+                                //alert("successfully added");
+                            },
+                            error: function (xhr) {
+                                alert("error occured");
+                            }
+                        });
+                        sntq = parseFloat(serialnototalqty);
+
+                        $('#qtysn').val('');
+                        $('#snf').val('');
+                        $('#snt').val('');
+                    }
+                    else {
+                        alert("Please enter serial start from and serial number end!")
+                    }
+                }
+                else {
+                    alert("Qty out of range!")
+                    serialnototalqty = sntq;
+                }
+            }
+        },
+        error: function (err) {
+            alert("Error Occured. Please Try Again Later!!");
+        }
+    });
+});
+
+    $("#prodinfo").on('input', '#snf', function (e) {
+        var snqty = $('#qtysn').val();
+        if (parseInt(snqty) <= parseInt(tqty)) {
+            var input = $(this);
+            var snf = input.val();
+            var sntfinal = parseInt(snqty) + parseInt(snf) - 1;
+            $('#snt').val(sntfinal);
+        }
+        else {
+            alert("Qty out of range!")
+            $('#qtysn').val('');
+            $('#snf').val('');
+            $('#snt').val('');
+        }
+    });
+
+    $("#SerialProductModal").on('click', '.serialnosave', function () {
+        alert("successfull saved");
+        $("#SerialProductModal").modal("hide");
+    });
+
+    $("#savepo").click(function (e) {
+        var $btn = $(this);
+        $btn.button('loading');
+        var pom = {};
+        var polist = [];
+        $("table tr:not(:first)").each(function () {
+            var tdlist = $(this).find("td");
+            var Item = {
+                productname: $(tdlist[0]).text(),
+                qty:$(this).closest('tr').find("#approveqty :input[type='number']").val(),/* $(tdlist[1]).html(),*/
+                IsRowCheck: $(tdlist[4]).find("input:checkbox").is(':checked'),
+                rate: $(tdlist[5]).html(),
+                amount: $(tdlist[6]).html(),
+            };
+            polist.push(Item);
+        })
+
+        pom.temppurchaseid = @Model.id;
+        pom.vat_amt = vatamt;
+        pom.polist = polist;
+        pom.order_date = $('#OrderDate').val();
+        pom.forwarded_to = $('#Forwarded_To').val();
+        pom.delivery_date = $('#LastDateOfDelivery').val();
+        pom.remarks = $('#PONotes').val();
+        pom.prod_specfic = $('#POSpecification').val();
+        pom.vendor_code = $('#vendorname :selected').val()
+        $.ajax({
+            async: true,
+            url: "/DispatchRequisition/GeneratePO",
+            type: "POST",
+            datatype: 'JSON',
+            contentType: "application/json",
+            data: JSON.stringify(pom),
+            success: function (data) {
+                if (data.success == true) {
+                    $btn.button('reset');
+                    alert(data.mes);
+                    window.location.replace("/BranchWiseHistory/Index", true)
+                }
+                else {
+                    $btn.button('reset');
+                    alert(data.err);
+                }
+            },
+            error: function (err) {
+                $btn.button('reset');
+                alert("error occured!!");
+            }
+        });
+    });
+
+    $(document).on('change', '#defaultUnchecked', function () {
+        footer();
+    });
+
+    $("#tbl_po").on("input", '#approveqty', function (e) {
+        var oldapproveqty = $(this).closest('tr').find('#oldapproveqty').text();
+        var newpatchqty = $(this).closest('tr').find("#approveqty :input[type='number']").val();
+        if (newpatchqty == "") {
+            $(this).closest('tr').find("#approveqty :input[type=number]").val(0);
+        }
+        else if (parseInt(newpatchqty) > parseInt(oldapproveqty)) {
+            alert("Qty must be smaller or equal to Approved Qty.");
+            $(this).closest('tr').find("#approveqty :input[type=number]").val(parseInt(oldapproveqty));
+        }
+    });
+</script>

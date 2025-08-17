@@ -1,0 +1,70 @@
+﻿
+@model  IEnumerable<InventoryManagementSystem.Domain.BillInfoVM>
+@{
+    ViewBag.Title = "Paid Bills";
+}
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="box-title"><i class="fa fa-list"></i> Paid Bill List  </div>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body tablefont">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Bill No</th>
+                    <th>Bill Date</th>
+                    <th>Bill Amount</th>
+                    <th>Vendor Name</th>
+                    <th>Entered By</th>
+                    <th>Entered Date</th>
+                    <th>Bill Notes</th>
+                    <th>Paid By</th>
+                    <th>Paid Date</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(model => item.billno)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.bill_date)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.bill_amount)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.PartyName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.orderby)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.entered_date)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.bill_notes)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.paidby)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.paid_date)
+                        </td>
+                        <td>
+                            @*<a href="@Url.Action("Create","ApprovePurchaseOrder",new { id=item.bill_id})" class="btn btn-xs btn-info" title="Invoice"><i>Invoice</i></a>*@
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

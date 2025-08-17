@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" href="~/Umbrella-icon.PNG" />
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/adminLte")
+    <title>@ViewBag.Title</title>
+</head>
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <div class="login-logo">
+            <span style="color: blue"><b style="color:#ff6a00 ">Inventory</b><br />System</span>
+        </div>
+        <!-- /.login-logo -->
+        <div class="login-box-body">
+            @RenderBody()
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-xs-12 col-md-12">
+                @*<div class="checkbox col-md-4">
+                        @Html.CheckBoxFor(m => m.IsRemember)
+                        Remember Me
+                    </div>*@
+                <img src="~/Content/Images/Umbrella_full.PNG" height="65" width="180" class="pull-right" />
+            </div>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/adminLte")
+    <script>
+        $(document).ready(function () {             
+                $('form:first *:input[type!=hidden]:first').focus();
+        if ('@TempData["Success"]' != '') {
+            $.notify({
+                icon : '@TempData["Icon"]',
+                title :'@Html.Raw(@TempData["Title"])',
+                message : '@Html.Raw(@TempData["Success"])'
+            }, {
+                    type: 'success',
+                animate: {
+                    enter: 'animated fadeInUp',
+                    exit: 'animated fadeOutRight'
+                },
+                placement: {
+                    from: 'bottom',
+                    align: 'right'
+                    },
+                    mouse_over: 'pause'
+            });
+            }
+            if ($('.validation-summary-errors > ul > li').css('display') != 'none') {
+                $('.validation-summary-errors').css('display','block');
+            }
+        })
+        // Get the input field
+var input = document.getElementById("Password");
+
+// Get the warning text
+        var text = document.getElementById("Password-Caps");
+        
+
+// When the user presses any key on the keyboard, run the function
+input.addEventListener("keyup", function(event) {
+
+  // If "caps lock" is pressed, display the warning text
+  if (event.getModifierState("CapsLock")) {
+      text.style.display = "block";
+      text.innerText = "Caps Lock is on."
+  } else {
+    text.style.display = "none"
+  }
+});
+    </script>
+</body>
+</html>
+

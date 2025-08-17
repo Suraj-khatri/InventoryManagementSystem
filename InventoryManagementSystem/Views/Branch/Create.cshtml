@@ -1,0 +1,177 @@
+﻿@model InventoryManagementSystem.Domain.BranchVM
+@{
+    ViewBag.Title = Model.BRANCH_ID == 0 ? "Add Branch" : "Edit Branch";
+}
+
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="box-title">@((Model.BRANCH_ID > 0) ? Html.Raw("<i class='fa fa-pencil'></i> Edit Branch") : Html.Raw("<i class='fa fa-plus'></i> Add Branch"))</div>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+
+
+    @using (Html.BeginForm())
+    {
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.BRANCH_ID)
+
+    <div class="box-body formfont">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <p>Please enter valid data! <a style="color:red">(* Required fields)</a></p>
+        <div class="row">
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.BRANCH_NAME, htmlAttributes: new { @class = "control-label required" })
+                    @Html.EditorFor(model => model.BRANCH_NAME, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(x => x.BRANCH_NAME, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.BRANCH_GROUP, htmlAttributes: new { @class = "control-label required" })
+                    @Html.DropDownListFor(model => model.BRANCH_GROUP, Model.ProvinceList, new { @class = "form-control selectSearch", @id = "provincename" })
+                    @Html.ValidationMessageFor(x => x.BRANCH_GROUP, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.BRANCH_SHORT_NAME, htmlAttributes: new { @class = "control-label required" })
+                    @Html.EditorFor(model => model.BRANCH_SHORT_NAME, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(x => x.BRANCH_SHORT_NAME, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.BRANCH_ADDRESS, htmlAttributes: new { @class = "control-label required" })
+                    @Html.EditorFor(model => model.BRANCH_ADDRESS, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(x => x.BRANCH_ADDRESS, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.BRANCH_PHONE, htmlAttributes: new { @class = "control-label required" })
+                    @Html.EditorFor(model => model.BRANCH_PHONE, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(x => x.BRANCH_PHONE, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ExtNo, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.ExtNo, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.BRANCH_FAX, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.BRANCH_FAX, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.BRANCH_EMAIL, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.BRANCH_EMAIL, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.BRANCH_COUNTRY, htmlAttributes: new { @class = "control-label" })
+                    @Html.DropDownListFor(model => model.BRANCH_COUNTRY, Model.CountryList, new { @class = "form-control selectSearch" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.BRANCH_DISTRICT, htmlAttributes: new { @class = "control-label required" })
+                    @Html.DropDownListFor(model => model.BRANCH_DISTRICT, Model.DistrictList, new { @class = "form-control selectSearch", @id = "districtname" })
+                    @Html.ValidationMessageFor(x => x.BRANCH_DISTRICT, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.BRANCH_Municipality, htmlAttributes: new { @class = "control-label" })
+                    @Html.DropDownListFor(model => model.BRANCH_Municipality, Model.MunicipalityList, new { @class = "form-control selectSearch" })
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Batch_Code, htmlAttributes: new { @class = "control-label required" })
+                    @Html.EditorFor(model => model.Batch_Code, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(x => x.Batch_Code, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CONTACT_PERSON, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.CONTACT_PERSON, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.stockAc, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.stockAc, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.expensesAc, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.expensesAc, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.transitAc, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.transitAc, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.isDirectExp, htmlAttributes: new { @class = "control-label" })
+                    <div>
+                        @Html.RadioButtonFor(model => model.isDirectExp, true) Yes
+                        @Html.RadioButtonFor(model => model.isDirectExp, false) No
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Is_Active, htmlAttributes: new { @class = "control-label" })
+                    <div>
+                        @Html.RadioButtonFor(model => model.Is_Active, true) Yes
+                        @Html.RadioButtonFor(model => model.Is_Active, false) No
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <div class="col-md-12 col-md-offset-9">
+                <a href="/Branch/Index" class="btn btn-default"><i class="fa fa-close"></i> Cancel</a>
+                <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
+            </div>
+        </div>
+    </div>
+    }
+</div>
+@Scripts.Render("~/bundles/jqueryval")
+<script>
+    var obj;
+    $(document).ready(function () {
+        obj = @Html.Raw(Json.Encode(@Model));
+    })
+</script>
+<script src="~/Scripts/Areas/Branch/Create.Js"></script>
+
+
+

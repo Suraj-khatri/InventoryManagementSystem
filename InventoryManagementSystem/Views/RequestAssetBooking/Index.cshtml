@@ -1,0 +1,70 @@
+﻿@model  IEnumerable<InventoryManagementSystem.Domain.FixedAssetsViewModel.AssetInventoryTempVM>
+@{
+    ViewBag.Title = "Asset Booking Details";
+}
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="box-title"><i class="fa fa-list"></i> Asset Booking Details</div>
+        <div class="box-tools pull-right">
+            <a href="/RequestAssetBooking/Create" class="btn btn-success btn-sm">
+                <i class="fa fa-plus-circle"></i>
+                Add
+            </a>
+            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body tablefont">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Asset Type</th>
+                    <th>Booked Date</th>
+                    <th>Dep. Start Date</th>
+                    <th>Purchase Value</th>
+                    <th>Acc. Dep.</th>
+                    <th>Status</th>
+                    <th>Assigned Branch</th>
+                    <th>Req. Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(model => item.product_id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.booked_date)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.depr_start_date)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.purchase_value)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.acc_depriciation)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.asset_status)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.branch_id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.status)
+                        </td>
+                        <td>
+                            <a href="@Url.Action("Edit","RequestAssetBooking",new{Id=item.id })" class="btn btn-xs btn-info" title="View"><i class="fa fa-eye"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

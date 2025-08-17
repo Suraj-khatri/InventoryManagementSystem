@@ -1,0 +1,104 @@
+﻿@model  InventoryManagementSystem.Domain.EmployeeVM
+@{
+    ViewBag.Title = "Employee Details";
+}
+@using (Html.BeginForm("Index", "EmployeeDetails", FormMethod.Post, new { id = "detinfo" }))
+{
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <div class="box-title"><i class="fa fa-list"></i> Employee Details </div>
+            <div class="box-tools pull-right">
+                <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="box-body formfont">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Province Name </label>
+                        @Html.DropDownListFor(model => model.TEMP_PROVINCE, Model.ProvinceList, new { @class = "form-control selectSearch", @id = "proname" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Branch Name </label>
+                        @Html.DropDownListFor(model => model.BRANCH_ID, Model.BranchList, new { @class = "form-control selectSearch", @id = "branchname" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <br />
+                        <button type="submit" class="btn btn-success pull-right">Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-body tablefont">
+            <table class="table table-bordered table-responsive table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Employee Code</th>
+                        <th>Full Name</th>
+                        <th>Province No.</th>
+                        <th>Branch Name</th>
+                        <th>Department Name</th>
+                        <th>Designation</th>
+                        <th>Mobile Number</th>
+                        <th>All Info</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.EmployeeVMList.Where(x => x.EMP_STATUS == "Active" || x.EMP_STATUS == "Inactive"))
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(model => item.EMP_CODE)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.FullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.TEMP_PROVINCE)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.BranchName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.DepartmentName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.Designation)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.PERSONAL_MOBILE)
+                            </td>
+                            <td>
+                                <a class="btn btn-xs btn-success" data-toggle="modal" data-target="#myModal" onclick="return ViewEmpDet(@Json.Encode(item))" title="View"><i class="fa fa-eye"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+<div class="modal fade" id="myModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><i class="fa fa-info-circle fa-lg"></i> <strong>Employee Info.</strong></h4>
+            </div>
+            <div class="modal-body list-modal">
+                <div id="datalist">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/Areas/Employee Details/Index.js"></script>

@@ -1,0 +1,186 @@
+﻿@model InventoryManagementSystem.Domain.FixedAssetsViewModel.AssetInventoryTempVM
+@{
+    ViewBag.Title = "Approve Asset Booking Request";
+}
+
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="box-title"> <i class="fa fa-arrow-right"></i>Approval Actions</div>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.id)
+        <div class="box-body formfont">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @*<h4 style="margin-bottom:10px; color:chocolate"><i class="fa fa-info-circle"></i> Purchase Order Information</h4>*@
+            <fieldset style="list-style: circle; list-style-type: circle; width: 50%;">
+                <legend style="color:chocolate;font-size:small;font:bold">Approval Actions:</legend>
+                <div class="row">
+                    <div class="col-md-6 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Requested Date: </label>
+                            @Html.DisplayFor(model => model.created_date)
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Requested By: </label>
+                            @Html.DisplayFor(model => model.created_by)
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Requested Type: </label>
+                            @Html.DisplayFor(model => model.reqtype)
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Requested Mode: </label>
+                            @Html.DisplayFor(model=>model.reqmode)
+                        </div>
+                    </div>
+                </div>
+                <table border="1" style="width:100%">
+                    <tr>
+                        <th style="padding:5px">Field Name</th>
+                        <th>Values</th>
+                    </tr>
+                    <tr>
+                        <td>Group Name:</td>
+                        <td>@Model.product_id</td>
+                    </tr>
+                    <tr>
+                        <td>Asset Type:</td>
+                        <td> </td>
+                    </tr>
+                    <tr>
+                        <td>Book Date:</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Dep Start Date:</td>
+                        <td> </td>
+                    </tr>
+                    <tr>
+                        <td>Purchase Date:</td>
+                        <td> </td>
+                    </tr>
+                    <tr>
+                        <td>Purchase Value:</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Acc Dep:</td>
+                        <td> </td>
+                    </tr>
+                    <tr>
+                        <td>Branch Name:</td>
+                        <td> </td>
+                    </tr>
+                    <tr>
+                        <td>Dept Name:</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Narration:</td>
+                        <td> </td>
+                    </tr>
+                    <tr>
+                        <td>Bill Info:</td>
+                        <td> </td>
+                    </tr>
+                    <tr>
+                        <td>Insurance Info:</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Asset Owner:</td>
+                        <td> </td>
+                    </tr>
+                    <tr>
+                        <td>Warrenty Date:</td>
+                        <td> </td>
+                    </tr>
+                    <tr>
+                        <td>Asset Serial:</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Next Maint. Date:</td>
+                        <td> </td>
+                    </tr>
+                    <tr>
+                        <td>Status:</td>
+                        <td> </td>
+                    </tr>
+                    <tr>
+                        <td>Dep (%):</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Is Amortised:</td>
+                        <td> </td>
+                    </tr>
+                    <tr>
+                        <td>Life In Month:</td>
+                        <td> </td>
+                    </tr>
+                    <tr>
+                        <td>Requested Date:</td>
+                        <td> </td>
+                    </tr>
+                    <tr>
+                        <td>Requested By:</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Remain Month:</td>
+                        <td> </td>
+                    </tr>
+                    <tr>
+                        <td>Old Asset No:</td>
+                        <td> </td>
+                    </tr>
+                    <tr>
+                        <td>Old Asset Code:</td>
+                        <td> </td>
+                    </tr>
+                    <tr>
+                        <td>Model:</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Brand:</td>
+                        <td> </td>
+                    </tr>
+                </table>
+                <div class="row">
+                    <div class="col-md-12 col-xs-12">
+                        <div class="form-group">
+                            <label class="control-label">Remarks(Only if rejected): </label>
+                            @Html.EditorFor(model => model.status, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="box-footer">
+                @*<div class="col-md-12 col-md-offset-9">
+                    <a href="/Branch/Index" class="btn btn-default"><i class="fa fa-close"></i> Back</a>
+                    <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Approve</button>
+                    <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Reject</button>
+                    <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Terminate</button>
+                </div>*@
+            </div>
+        </div>
+    }
+</div>
+

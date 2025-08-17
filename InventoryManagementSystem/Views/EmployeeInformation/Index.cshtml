@@ -1,0 +1,88 @@
+﻿@model  InventoryManagementSystem.Domain.EmployeeVM
+@{
+    ViewBag.Title = "Employee Information";
+}
+
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="box-title"><i class="fa fa-list"></i> Employee Information </div>
+        <div class="box-tools pull-right">
+            <a href="/EmployeeInformation/Create" class="btn btn-success btn-sm">
+                <i class="fa fa-plus-circle"></i>
+                Add Employee Information
+            </a>
+            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    <div class="box-body tablefont" style="overflow:auto">
+        <table class="table table-bordered" id="emptable">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Employee Code</th>
+                    <th>Full Name</th>
+                    <th>Branch Name</th>
+                    <th>Department Name</th>
+                    <th>Designtion</th>
+                    <th>Mobile Number</th>
+                    <th>Emp Status</th>
+                    <th>All Info</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.EmployeeVMList.Where(x => x.EMP_STATUS == "Active" || x.EMP_STATUS =="Inactive"))
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => item.EMP_CODE)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.BranchName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.DepartmentName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.Designation)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.PERSONAL_MOBILE)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.EMP_STATUS)
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Edit","EmployeeInformation",new{Id=item.EMPLOYEE_ID })" class="btn btn-xs btn-info" title="All Info"><i class="fa fa-edit"></i></a>
+                        @if (Model.userRole == "Admin_User" || Model.userRole == "StoreKeeper(HeadOffice)")
+                        {
+                            <a href="@Url.Action("Index", "SuperVisorAssignment",new {Id=item.EMPLOYEE_ID })" class="btn btn-xs btn-info" title="Assign Supervisor"><i class="fa fa-anchor"></i></a>
+                        }
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    $('.table').on('search.dt', function () {
+        var record = ''
+        record = $('.dataTables_filter input').val();
+        localStorage.setItem('record', record);
+    });
+
+    $(document).ready(function () {
+        $.fn.dataTableExt.sErrMode = 'throw';
+        var data = localStorage.getItem('record');
+        if (data != '') {
+            $('.table').dataTable({
+                "oSearch": { "sSearch": data }
+            });
+        }
+    });
+</script>

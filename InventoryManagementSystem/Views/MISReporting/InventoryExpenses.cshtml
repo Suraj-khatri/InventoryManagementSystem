@@ -1,0 +1,90 @@
+﻿@model InventoryManagementSystem.Domain.ReportingViewModel.ReportParameterVM
+@using ReportViewerForMvc;
+@{
+    ViewBag.Title = "Inventory Expenses";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    iframe {
+        width: 100% !important;
+        border: none;
+        margin: 0px;
+        padding: 0px;
+    }
+</style>
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="box-title"><i class="fa fa-search"></i> Inventory Expenses</div>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="box-body formfont">
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "TicketReport" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="row">
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.DateFrom, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.DateFrom, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.DateFrom, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.DateTo, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.DateTo, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.DateTo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.BranchId, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.BranchId, Model.BranchList, new { @class = "form-control",@id="branchid" })
+                        @Html.ValidationMessageFor(model => model.BranchId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.DepartmentId, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.DepartmentId, Model.DepartmentList, new { @class = "form-control", @id="departmentid" })
+                        @Html.ValidationMessageFor(model => model.DepartmentId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ProductId, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.ProductId, Model.ProductList, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.ProductId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="pull-right">
+                    <button type="submit" id="showReport4" formaction="InventoryExpensesSummary" class="btn btn-success margin-r-5"> Branch Wise</button>
+                    <button type="submit" id="showReport5" formaction="InventoryExpensesDetail" class="btn btn-success margin-r-5"> Detail Report</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@using (Html.BeginForm())
+{
+
+}
+@if (ViewBag.ReportViewer != null)
+{
+    @Html.ReportViewer(ViewBag.ReportViewer as Microsoft.Reporting.WebForms.ReportViewer, new { scrolling = "no" })
+}
+
+<script src="~/Scripts/Areas/MISReporting/InventoryExpenses.Js"></script>

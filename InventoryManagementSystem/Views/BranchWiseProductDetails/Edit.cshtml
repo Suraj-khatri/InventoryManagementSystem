@@ -1,0 +1,132 @@
+﻿@model InventoryManagementSystem.Domain.INBranchVM
+
+@{
+    ViewBag.Title = "Assign Branch";
+}
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <div class="box-title">  Branch Product Setup   </div>
+            <div class="box-tools pull-right">
+                <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                    <i class="fa fa-minus" id="minusBtn"></i>
+                </button>
+            </div>
+        </div>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(x => x.ID)
+            @Html.HiddenFor(x => x.stock_in_hand)
+
+            <div class="box-body formfont">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="row">
+                    <div class="col-md-6 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.INPRODUCTs.porduct_code, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.INPRODUCTs.porduct_code, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    @if (Model.ID == 0)
+                    {
+                        <div class="col-md-3 col-xs-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Branches.BRANCH_NAME, htmlAttributes: new { @class = "control-label" })
+                                @Html.DropDownListFor(model => model.BRANCH_ID, Model.BranchList, new { @class = "form-control selectSearch" })
+                                @Html.ValidationMessageFor(x => x.BRANCH_ID, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        @Html.HiddenFor(x => x.Branches.BRANCH_ID)
+                        @Html.HiddenFor(x => x.Branches.BRANCH_GROUP)
+                        @Html.HiddenFor(x => x.Branches.BRANCH_SHORT_NAME)
+                        @Html.HiddenFor(x => x.Branches.BRANCH_NAME)
+                        @Html.HiddenFor(x => x.Branches.BRANCH_Municipality)
+                        @Html.HiddenFor(x => x.Branches.BRANCH_PHONE)
+                        @Html.HiddenFor(x => x.Branches.BRANCH_DISTRICT)
+                        @Html.HiddenFor(x => x.Branches.Batch_Code)
+                        @Html.HiddenFor(x => x.Branches.BRANCH_ADDRESS)
+                        @Html.HiddenFor(x => x.Branches.BRANCH_COUNTRY)
+                        @Html.HiddenFor(x => x.INPRODUCTs.id)
+                        @Html.HiddenFor(x => x.INPRODUCTs.package_unit)
+                        @Html.HiddenFor(x => x.INPRODUCTs.product_desc)
+                        <div class="col-md-6 col-xs-12">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Branches.BRANCH_NAME, htmlAttributes: new { @class = "control-label" })
+                                @Html.EditorFor(model => model.Branches.BRANCH_NAME, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SALES_AC, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.SALES_AC, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.PURCHASE_AC, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.PURCHASE_AC, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.INVENTORY_AC, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.INVENTORY_AC, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.COMM_AC, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.COMM_AC, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.REORDER_LEVEL, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.REORDER_LEVEL, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.REORDER_QTY, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.REORDER_QTY, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.MAX_HOLDING_QTY, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.MAX_HOLDING_QTY, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xs-12">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.IS_ACTIVE, htmlAttributes: new { @class = "control-label" })
+                            <div>
+                                @Html.RadioButtonFor(model => model.IS_ACTIVE, true) Yes
+                                @Html.RadioButtonFor(model => model.IS_ACTIVE, false) No
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="box-footer">
+                    <div class="col-md-12 col-md-offset-9">
+                        <a href="/BranchWiseProductDetails/Index/" class="btn btn-default"><i class="fa fa-close"></i> Cancel</a>
+                        <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+@Scripts.Render("~/bundles/jqueryval")

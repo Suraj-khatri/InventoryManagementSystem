@@ -1,0 +1,97 @@
+﻿@model  InventoryManagementSystem.Domain.INBranchVM
+@{
+    ViewBag.Title = "Product Assignment Details With Branches";
+}
+
+@using (Html.BeginForm("Index","BranchWiseProductDetails",FormMethod.Post,new { id = "detinfo" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <div class="box-title">
+                <i class="fa fa-list"></i> Product Assignment Details With Branches
+            </div>
+        </div>
+        <div class="box-body formfont">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="control-label">Branch Name </label>
+                        @Html.DropDownListFor(model => model.BRANCH_ID, Model.BranchList, new { @class = "form-control selectSearch", @id = "branchname" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="label-control">Product Group Name</label>
+                        @Html.DropDownListFor(model => model.ProdGrpId, Model.ProductGroupList, new { @class = "form-control selectSearch" })
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <br />
+                        <button type="submit" class="btn btn-success pull-right">Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-body tablefont">
+            <table class="table table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>S.N.</th>
+                        <th>Product <br /> Code</th>
+                        <th>Product <br /> Name</th>
+                        <th>Branch <br /> Name</th>
+                        <th>Reorder <br /> Level</th>
+                        <th>Reorder <br /> Qty</th>
+                        <th>Max <br /> Qty</th>
+                        <th>Current <br /> Stock</th>
+                        <th>Is <br /> Active</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ int i = 1;}
+                    @foreach (var item in Model.INBranchVMList.OrderBy(x=>x.ProductName.Trim()))
+                    {
+                        <tr>
+                            <td style="width:3%">
+                                @i
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.PRODUCT_ID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.ProductName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.BRANCH_NAME)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.REORDER_LEVEL)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.REORDER_QTY)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.MAX_HOLDING_QTY)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.stock_in_hand)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(model => item.IS_ACTIVE)
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Edit","BranchWiseProductDetails",new{pid=item.PRODUCT_ID , branchid=item.BRANCH_ID})" class="btn btn-xs btn-info" title="View"><i class="fa fa-eye"></i></a>
+                            </td>
+                        </tr>
+                        i++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
+
+

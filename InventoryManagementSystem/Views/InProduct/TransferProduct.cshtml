@@ -1,0 +1,56 @@
+﻿@model InventoryManagementSystem.Domain.In_ProductVM
+@{
+    ViewBag.Title = "Tranfer Product";
+}
+
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="box-title">Transfer Product</div>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.id)
+        @Html.HiddenFor(x => x.item_id)
+
+        <div class="box-body formfont">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="row">
+                <div class="col-md-3 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label">Current Product Group Name</label>
+                        <input type="text" class="form-control" value="@ViewBag.ItemName" readonly="readonly" />
+                    </div>
+                </div>
+                <div class="col-md-5 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label">Product Name </label>
+                        <input type="text" class="form-control" value="@Model.porduct_code" readonly="readonly" />
+                    </div>
+                </div>
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        @Html.Label("Transfer To Product Group Name", htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.ProductGroupId, Model.ProductGroupList, new { @class = "form-control selectSearch" })
+                        @Html.ValidationMessageFor(x => x.ProductGroupId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="col-md-12 col-md-offset-9">
+                    <a href="/InProduct/Index/@(Model.INITEMVM.parent_id)" class="btn btn-default"><i class="fa fa-close"></i> Cancel</a>
+                    <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+@Scripts.Render("~/bundles/jqueryval")
+
+

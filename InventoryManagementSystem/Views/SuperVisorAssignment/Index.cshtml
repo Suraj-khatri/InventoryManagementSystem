@@ -1,0 +1,109 @@
+﻿@model  InventoryManagementSystem.Domain.SuperVisorAssignmentVM
+@{
+    ViewBag.Title = "Employee Wise Supervisor List";
+}
+<div class="box box-primary">
+    <div class="box-header with-border">
+        <div class="box-title"><i class="fa fa-list"></i> Supervisor Assignment Of :- <a>@ViewBag.EmployeeName</a>  </div>
+        <div class="box-tools pull-right">
+            <a href="/EmployeeInformation/Index" class="btn btn-default btn-sm">
+                <i class="fa fa-list"></i>
+                Back to List
+            </a>
+            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                <i class="fa fa-minus"></i>
+            </button>
+        </div>
+    </div>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.SV_ASSIGN_ID)
+        <div class="box-body formfont">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="row">
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        @Html.Label("Employee Name", htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.EMP, Model.EmployeeList, new { @class = "form-control selectSearch" })
+                        @Html.ValidationMessageFor(x => x.EMP, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        @Html.Label("Branch Name", htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.BRANCH, Model.BranchNameList, new { @class = "form-control selectSearch", @id = "forwardedto" })
+                        @Html.ValidationMessageFor(x => x.BRANCH, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4 col-xs-12">
+                    <div class="form-group">
+                        @Html.Label("Supervisor Name", htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.SUPERVISOR, Model.EmployeeList, new { @class = "form-control selectSearch", @id = "recommendby" })
+                        @Html.ValidationMessageFor(x => x.SUPERVISOR, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <div class="col-md-12 col-md-offset-11">
+                    <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Save</button>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="box-body tablefont">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Branch Name</th>
+                    <th>Supervisor Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{ int i = 1;}
+                @foreach (var item in Model.SuperVisorAssignmentVMList)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(model => item.BranchName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.SuperVisorName)
+                        </td>
+                        <td>
+                            <a onclick="confirm('Are you sure?') ? $('#DeleteForm_@item.SV_ASSIGN_ID').submit() : null;" class="btn btn-xs btn-danger" title="Remove">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                            @using (Html.BeginForm("Delete", "SuperVisorAssignment", FormMethod.Post, new { id = "DeleteForm_" + item.SV_ASSIGN_ID }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <input id="id" name="id" value="@item.SV_ASSIGN_ID" style="display:none;" readonly="readonly" />
+                            }
+                        </td>
+                    </tr>
+                    i++;
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#forwardedto').change();
+    });
+    $('#forwardedto').change(function () {
+        $('#recommendby').empty();
+        $.ajax({
+            url: '/DirectDispatchForBranch/GetEmployeeForBranchList',
+            type: 'POST',
+            data: { branchid: $('#forwardedto').val() },
+            success: function (data) {
+                $.each(data, function (i, item) {
+                    $('#recommendby').append(new Option(item.Text, item.Value));
+                })
+            }
+        });
+    });
+</script>

@@ -1,0 +1,365 @@
+﻿/*body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}*/
+
+
+/* Set padding to keep content from hitting the edges */
+/*.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}*/
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+/*added by rajit*/
+.formfont {
+    font-size: 11px;
+}
+.tablefont {
+    font-size:11px;
+}
+.required:after {
+    content: " *";
+    color: red;
+}
+/*--------------*/
+table {
+    white-space: nowrap;
+}
+
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+.box-body input,
+select,
+textarea {
+    max-width: 1000px;
+}
+
+
+
+li.user > .dropdown-menu {
+    max-width: 170px;
+    border-radius: 0px !important;
+    background-color: #1670b5;
+    color: white;
+    border-color: #243035;
+    border-top: 1px;
+    margin-top: 3px !important;
+    margin-right: 2px !important;
+}
+
+    li.user > .dropdown-menu > li.user-header {
+        height: 35px !important;
+        border-radius: 5px !important;
+        text-align: left !important;
+        padding: 0px !important;
+    }
+
+li.user > ul.dropdown-menu {
+    background-color: #1670b5 !important;
+    border-radius: 5px !important;
+    border: solid #243035 !important;
+    opacity: 0.95;
+}
+
+li.user-header > a {
+    text-decoration: none;
+    width: 100%;
+    height: 100%;
+    color: white;
+    background-color: transparent;
+    padding: 10px !important;
+    /*margin: 10px !important;*/
+}
+
+    li.user-header:hover, li.user-header > a:hover {
+        background-color: #1465a3 !important;
+        color: white;
+        cursor: pointer;
+    }
+
+.slimScrollBar {
+    background: #4ee41a !important;
+    border-radius: 0;
+    display: none;
+    position:unset;
+    z-index: 99;
+    opacity: 0.7 !important;
+    width:8px !important;
+}
+
+.skin-blue .main-header .navbar {
+    background-color: #1670b5;
+}
+
+.skin-blue .main-header .logo {
+    background-color: #243035;
+}
+
+    .skin-blue .main-header .logo:hover {
+        background-color: #202b2f;
+    }
+
+.skin-blue .main-header .navbar .sidebar-toggle:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+section.content-header {
+    background-color: white !important;
+    box-shadow: 0 2px 2px -2px gray;
+}
+
+    section.content-header > h1 {
+        margin-top: -10px;
+    }
+
+.content {
+    padding: 15px;
+}
+
+.login-box, .login-box-body {
+    margin-top: 7%;
+    background-color: white;
+    padding: 10px;
+}
+
+.login-box {
+    box-shadow: 3px 3px 15px;
+    border-radius: 15px;
+}
+
+.btn-primary:hover {
+    background-color: #1465a3;
+}
+
+.login-page {
+    overflow-y: hidden;
+    background-image: linear-gradient(to bottom right,#1670b5,#c7c7c7,#8cc47c);
+}
+
+    .login-page input {
+        border-radius: 5px;
+    }
+
+
+/*ruby Danne Kane Bootstrap Notify*/
+
+.alert-minimalist {
+    background-color: rgb(241, 242, 240);
+    border-color: rgba(149, 149, 149, 0.3);
+    border-radius: 3px;
+    color: rgb(149, 149, 149);
+    padding: 10px;
+}
+
+
+    .alert-minimalist > [data-notify="icon"] {
+        height: 50px;
+        margin-right: 12px;
+    }
+
+    .alert-minimalist > [data-notify="title"] {
+        color: rgb(51, 51, 51);
+        display: block;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .alert-minimalist > [data-notify="message"] {
+        font-size: 80%;
+    }
+
+[data-notify="progressbar"] {
+    margin-bottom: 0px;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    width: 100%;
+    height: 5px;
+}
+
+[data-notify="container"] {
+    cursor: pointer;
+    width: 25%;
+}
+
+.validation-summary-errors {
+    background-color: #cd2d19;
+    color: white;
+    border-radius: 5px;
+    padding-top: 6px;
+    padding-bottom: 1px;
+    border-left: 15px solid #d73925;
+    margin-bottom: 5px;
+    box-shadow: 1px 2px 2px darkgray;
+    display: none;
+    padding-right: 10px;
+}
+
+    .validation-summary-errors > ul {
+        margin-left: -5px;
+        list-style: none;
+        margin-bottom: 6px;
+    }
+
+.box.box-primary {
+    border-top-color: #1670b5 !important;
+}
+
+.box-body .form-group {
+    padding-left: 25px;
+}
+
+.navbarnav-tabs-custom {
+    width: 100%;
+}
+
+
+.input-validation-error {
+    border: 1px solid #a94442;
+    background-color: #ffeeee;
+}
+
+button.btn-success {
+    margin-left: 0 !important;
+}
+
+.thead-dark {
+    background-color: #439842; /*#1670b5;*/
+    color: white;
+}
+
+div.box-tools > a {
+    margin-right: 10px;
+}
+/*Style for div to show color*/
+#colorPalette {
+    width: 25px;
+    height: 25px;
+    /*display: inline-block;*/
+    border-radius: 5px;
+    /*margin-bottom: -8px;*/
+}
+
+@media (max-width: 1200px) {
+    .box-body {
+        overflow-x: auto;
+    }
+}
+
+.select2-container {
+    min-width: 140px;
+    display: block;
+    max-width: 280px;
+}
+
+fieldset {
+    display: block;
+    margin-inline-start: 2px;
+    margin-inline-end: 2px;
+    padding-block-start: 0.35em;
+    padding-inline-start: 0.75em;
+    padding-inline-end: 0.75em;
+    padding-block-end: 0.625em;
+    min-inline-size: min-content;
+    border-width: 1px;
+    border-style: groove;
+    border-color: threedface;
+    border-image: initial;
+    opacity: 7;
+}
+
+legend {
+    width: auto;
+    border: none;
+    margin-bottom: 12px;
+}
+
+.box-title {
+    font-weight: 600 !important;
+    color: black !important;
+}
+
+.modal-content {
+    border-radius: 3px !important;
+    border-top: 3px solid #1670b5 !important;
+}
+
+.modal-header {
+    border-bottom: 1.5px solid #e5e5e5;
+    padding: 10px;
+}
+
+.list-modal {
+    margin-left: 0px;/*before:60px*/
+}
+
+dl {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+dt {
+    flex-basis: 30%;
+    padding: 2px 4px;
+    text-align:left !important;
+}
+
+dd {
+    flex-basis: 70%;
+    flex-grow: 1;
+    margin: 0;
+    padding: 2px 4px;
+    margin-left: 0px !important;
+}
+
+.dl-horizontal {
+    text-align: left;
+}
+
+.colspan{
+    border-right:none !important;
+}
+
+.skin-blue .main-header .navbar .nav > li > a > .label {
+    font-size: 10px;
+}
+
+iframe {
+    width: 100% !important;
+    border: none;
+    margin: 0px;
+    padding: 0px;
+    background: white;
+}
+
+a:hover {
+    cursor: pointer;
+}
+
+    /*.sidebar-search {
+    display: block;
+    padding: 12px 5px 12px 15px;        
+    height:40px;
+}
+    .sidebar-search input {
+        background: #333 !important;        
+        width: 85%;
+        height: 100%;
+        color: #b8c7ce;   
+        padding-left:12px;
+        border-radius: 5px;
+        border: 0.5px solid black;
+        float: right;
+
+    }
+
+
+input[type="search"]:active, input[type="search"]:focus {
+        border: none !important;
+}*/
